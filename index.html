@@ -1,0 +1,3223 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#00adef">
+    <link rel="manifest" href="manifest.json">
+    <title>EFAC Paper.io CLONE - Ultimate</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap');
+        
+        body, html { margin: 0; padding: 0; width: 100vw; height: 100vh; background: #0a0a0a; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; touch-action: none; user-select: none; position: fixed; top: 0; left: 0; }
+        
+        #uiLayer { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(10,10,10,0.85) 0%, rgba(0,0,0,1) 100%); z-index: 20; backdrop-filter: blur(8px); padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left)); box-sizing: border-box; }
+        
+        .menu-board { background: linear-gradient(145deg, #161616, #111); border: 2px solid #00adef; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 0 40px rgba(0,173,239,0.3), inset 0 0 20px rgba(0,0,0,0.8); width: 100%; max-width: 760px; max-height: 95vh; overflow-y: auto; box-sizing: border-box; -webkit-overflow-scrolling: touch; }
+        
+        .menu-board::-webkit-scrollbar { width: 6px; }
+        .menu-board::-webkit-scrollbar-thumb { background: #00adef; border-radius: 5px; }
+
+        .menu-board h1 { margin: 0 0 5px 0; color: #fff; font-size: clamp(24px, 6vw, 32px); text-transform: uppercase; text-shadow: 0 0 15px #00adef; letter-spacing: 2px; }
+        .subtitle { color: #888; font-size: clamp(11px, 3vw, 13px); margin-bottom: 15px; }
+
+        .menu-top-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .menu-utility-btn { border: 1px solid rgba(0, 173, 239, 0.65); background: rgba(14, 20, 28, 0.85); color: #d6f3ff; border-radius: 10px; padding: 8px 11px; font-size: 11px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .menu-utility-btn:hover { border-color: #f1c40f; color: #fff7cd; }
+
+        .menu-section { margin-top: 12px; border: 1px solid #2d2d2d; border-radius: 14px; padding: 12px; background: linear-gradient(160deg, rgba(0, 0, 0, 0.35), rgba(0, 173, 239, 0.06)); }
+        .menu-section-title { margin: 0 0 8px 0; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #9edfff; text-align: left; }
+
+        .map-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .map-carousel { display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .map-nav-btn { border: 1px solid #3d5a71; background: #13202c; color: #d8f1ff; width: 38px; height: 38px; border-radius: 11px; font-size: 18px; font-weight: 900; cursor: pointer; }
+        .map-nav-btn:hover { border-color: #f1c40f; color: #fff8cc; }
+        .map-focus-card { width: min(460px, 100%); }
+        .map-card { border: 1px solid #2f3d4a; border-radius: 12px; padding: 10px; text-align: left; background: linear-gradient(155deg, rgba(17, 25, 36, 0.92), rgba(9, 14, 22, 0.92)); cursor: pointer; transition: 0.2s; }
+        .map-card:hover { transform: translateY(-2px); border-color: #00adef; }
+        .map-card.active { border-color: #f1c40f; box-shadow: 0 0 16px rgba(241, 196, 15, 0.3); }
+        .map-title-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+        .map-title { margin: 0; font-size: 13px; color: #ecf7ff; }
+        .map-shape { margin: 4px 0 8px 0; color: #8fb4cb; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+        .map-progress-track { width: 100%; height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.09); overflow: hidden; }
+        .map-progress-fill { height: 100%; background: linear-gradient(90deg, #00adef, #2ecc71); width: 0%; }
+        .map-progress-label { margin-top: 5px; font-size: 10px; color: #d8edf8; }
+
+        .menu-bottom-tabs { margin-top: 12px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+        .menu-tab { border: 1px solid #34495e; border-radius: 10px; background: #131b24; color: #cde8f6; font-size: 10px; font-weight: 800; padding: 9px 6px; text-transform: uppercase; cursor: pointer; }
+        .menu-tab.active { border-color: #2ecc71; color: #e8ffef; background: #12301f; }
+
+        .menu-window-note { margin: 8px 0 0 0; color: #9fb7c8; font-size: 11px; }
+        .menu-window-actions { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .menu-close-btn { margin-top: 12px; width: 100%; }
+        .meta-wallet { border: 1px solid #355167; border-radius: 12px; padding: 8px; background: rgba(9, 19, 28, 0.82); color: #f1c40f; font-weight: 800; margin-bottom: 10px; }
+        .mode-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .mode-btn { border: 1px solid #3c4e62; border-radius: 10px; background: #17222e; color: #d9ecf8; font-weight: 800; font-size: 11px; padding: 10px; cursor: pointer; }
+        .mode-btn.active { border-color: #2ecc71; background: #153122; color: #e9ffef; }
+        
+        .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        @media (max-width: 480px) { .char-grid { grid-template-columns: 1fr; } }
+        
+        .char-card { background: #1a1a1a; padding: 10px; border: 2px solid #333; cursor: pointer; transition: 0.2s; border-radius: 12px; display: flex; align-items: center; gap: 10px; }
+        .char-card:hover { border-color: #00adef; transform: translateY(-3px) scale(1.02); background: #222; }
+        .char-card img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #555; object-fit: cover; background: #fff; flex-shrink: 0; }
+        .char-info { text-align: left; }
+        .char-info h2 { margin: 0 0 2px 0; color: #00adef; font-size: 15px; }
+        .char-info p { margin: 0; font-size: 10px; color: #aaa; line-height: 1.2; }
+        .char-tag { display: inline-block; margin-top: 4px; font-size: 10px; color: #111; background: #f1c40f; padding: 2px 6px; border-radius: 999px; font-weight: 700; }
+
+        .skin-choice-row { display: flex; gap: 6px; margin-top: 6px; }
+        .skin-choice-btn {
+            border: 1px solid #3b3b3b;
+            border-radius: 8px;
+            padding: 3px 7px;
+            background: #121212;
+            color: #d6d6d6;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .skin-choice-btn.active {
+            border-color: #00adef;
+            color: #e9faff;
+            box-shadow: 0 0 8px rgba(0, 173, 239, 0.35);
+        }
+
+        .lore-card {
+            margin-top: 14px;
+            border: 1px solid #2e2e2e;
+            border-radius: 12px;
+            padding: 10px;
+            background: linear-gradient(135deg, rgba(0,173,239,0.08), rgba(46, 204, 113, 0.06));
+            text-align: left;
+            font-size: 11px;
+            line-height: 1.35;
+            color: #d7e6ed;
+        }
+
+        .settings-row {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .skin-lock-grid {
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+
+        .skin-lock-grid .menu-select {
+            font-size: 11px;
+            padding: 7px 8px;
+        }
+
+        .menu-select {
+            width: 100%;
+            border: 1px solid #3b3b3b;
+            border-radius: 10px;
+            background: #121212;
+            color: #f2f2f2;
+            padding: 8px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            outline: none;
+        }
+
+        #killFeed {
+            position: fixed;
+            top: max(70px, env(safe-area-inset-top) + 50px);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9;
+            width: min(90vw, 420px);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .kill-item {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(241, 196, 15, 0.45);
+            border-radius: 10px;
+            padding: 6px 10px;
+            font-size: 12px;
+            color: #f1c40f;
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+            animation: killFade 2.8s linear forwards;
+            backdrop-filter: blur(2px);
+        }
+
+        @keyframes killFade {
+            0% { opacity: 0; transform: translateY(-6px); }
+            12% { opacity: 1; transform: translateY(0); }
+            82% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-4px); }
+        }
+
+        #miniMapWrap {
+            position: fixed;
+            right: max(10px, env(safe-area-inset-right));
+            bottom: max(12px, env(safe-area-inset-bottom));
+            width: 130px;
+            height: 130px;
+            border: 2px solid rgba(241, 196, 15, 0.6);
+            border-radius: 12px;
+            background: rgba(7, 7, 7, 0.75);
+            z-index: 8;
+            backdrop-filter: blur(2px);
+            display: none;
+            overflow: hidden;
+        }
+
+        #miniMapCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .btn { background: linear-gradient(90deg, #00adef, #007bb5); color: #fff; border: none; padding: 12px 20px; font-size: 14px; font-weight: bold; border-radius: 10px; cursor: pointer; transition: 0.3s; margin-top: 15px; text-transform: uppercase; box-shadow: 0 5px 15px rgba(0,173,239,0.3); }
+        .btn:hover { background: linear-gradient(90deg, #00c3ff, #00adef); transform: scale(1.05); }
+
+        #hud { position: fixed; top: max(14px, env(safe-area-inset-top) + 8px); left: max(10px, env(safe-area-inset-left)); right: max(10px, env(safe-area-inset-right)); display: none; justify-content: space-between; align-items: flex-start; z-index: 5; pointer-events: none; }
+        
+        .hud-left { display: flex; flex-direction: column; gap: 10px; pointer-events: auto; }
+        .hud-box { background: rgba(0,0,0,0.8); border: 2px solid #333; padding: 6px 12px; border-radius: 12px; font-size: 16px; color: #2ecc71; text-shadow: 0 0 10px #2ecc71; backdrop-filter: blur(4px); pointer-events: none; }
+        #hudTip { max-width: 240px; font-size: 11px; color: #ddd; text-shadow: none; line-height: 1.2; }
+        #hudObjective { max-width: 260px; font-size: 11px; color: #f1c40f; text-shadow: none; line-height: 1.2; border-color: #6b5b16; }
+        
+        #alibiBtn { background: linear-gradient(90deg, #e74c3c, #c0392b); border: 2px solid #f1c40f; color: white; border-radius: 15px; padding: 10px 20px; font-weight: bold; cursor: pointer; font-size: 18px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); box-shadow: 0 5px 15px rgba(231,76,60,0.5); position: relative; overflow: hidden; pointer-events: auto; }
+        #alibiBtn:hover { transform: scale(1.05); }
+        #alibiBtn.cooldown { background: #444; border-color: #777; color: #aaa; cursor: not-allowed; box-shadow: none; pointer-events: none; }
+        .alibi-badges { color: #f1c40f; margin-left: 5px; font-size: 16px; }
+
+        .music-hud { display: flex; flex-wrap: wrap; gap: 6px; max-width: 270px; pointer-events: auto; }
+        .music-btn { border: 1px solid #00adef; background: rgba(12, 20, 30, 0.92); color: #d9f3ff; border-radius: 10px; padding: 6px 8px; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
+        .music-btn:hover { border-color: #f1c40f; color: #fff8d0; }
+        .music-btn.off { border-color: #666; color: #9aa7b2; }
+        #pauseToggleBtn { position: fixed; top: max(12px, env(safe-area-inset-top) + 4px); right: max(12px, env(safe-area-inset-right) + 4px); z-index: 9; pointer-events: auto; }
+        .music-now { width: 100%; background: rgba(0, 0, 0, 0.72); border: 1px solid rgba(46, 204, 113, 0.5); color: #b9ffd0; border-radius: 10px; padding: 5px 8px; font-size: 11px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .music-volume { width: 100%; accent-color: #00adef; }
+
+        #pauseBadge {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 16;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.76);
+            border: 1px solid rgba(0, 173, 239, 0.6);
+            border-radius: 12px;
+            padding: 14px 16px;
+            pointer-events: auto;
+        }
+        .pause-title { font-size: 16px; color: #f1c40f; font-weight: 800; letter-spacing: 1px; }
+        .pause-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .pause-actions .btn { margin: 0; padding: 8px 10px; font-size: 12px; }
+
+        .audio-panel { margin-top: 10px; width: min(520px, 86vw); border: 1px solid #334652; border-radius: 12px; padding: 10px; background: rgba(8, 14, 20, 0.82); }
+        .audio-panel .music-hud { max-width: 100%; }
+        .audio-panel .menu-select { margin-bottom: 8px; }
+        .audio-row-label { font-size: 11px; color: #9cd7ef; text-align: left; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.7px; }
+
+        .progress-container { width: clamp(140px, 40vw, 200px); background: rgba(0,0,0,0.8); border: 2px solid #333; border-radius: 12px; padding: 4px; text-align: center; position: relative; backdrop-filter: blur(4px); pointer-events: none; }
+        .progress-fill { height: 18px; background: linear-gradient(90deg, #00adef, #00c3ff); border-radius: 8px; width: 0%; transition: width 0.3s; }
+        .progress-text { position: absolute; top: 3px; left: 0; right: 0; font-size: 12px; color: #fff; text-shadow: 0 0 5px #000; font-weight: bold; }
+        .level-text { position: absolute; top: -20px; left: 0; right: 0; font-size: 11px; color: #f1c40f; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 5px #000; }
+        .nightmare-badge { color: #e74c3c; font-size: 10px; border: 1px solid #e74c3c; padding: 1px 5px; border-radius: 5px; margin-left: 6px; background: rgba(231, 76, 60, 0.18); display: none; vertical-align: middle; }
+
+        #bossBarWrap {
+            position: fixed;
+            top: max(10px, env(safe-area-inset-top));
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(62vw, 380px);
+            background: rgba(0,0,0,0.8);
+            border: 2px solid rgba(231,76,60,0.7);
+            border-radius: 12px;
+            padding: 4px;
+            z-index: 6;
+            display: none;
+            backdrop-filter: blur(3px);
+        }
+
+        #bossBarFill {
+            height: 14px;
+            border-radius: 8px;
+            width: 100%;
+            background: linear-gradient(90deg, #ff7675, #e74c3c);
+            transition: width 0.2s linear;
+        }
+
+        #bossBarText {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #fff;
+            text-shadow: 0 0 5px #000;
+            font-weight: 700;
+            pointer-events: none;
+        }
+
+        #powerupMsg { position: fixed; top: max(100px, env(safe-area-inset-top) + 80px); left: 50%; transform: translateX(-50%); font-size: clamp(20px, 5vw, 28px); font-weight: 900; display: none; text-align: center; z-index: 100; pointer-events: none; }
+        #hitFlash { position: fixed; inset: 0; background: #ffffff; opacity: 0; pointer-events: none; z-index: 99; }
+
+        .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+        @media (max-width: 480px) { .shop-grid { grid-template-columns: 1fr; } }
+        .shop-item { background: #1a1a1a; border: 2px solid #444; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+        .shop-title { color: #f1c40f; font-size: 14px; margin: 0 0 3px 0; }
+        .shop-desc { color: #aaa; font-size: 10px; margin: 0 0 8px 0; line-height: 1.2; }
+        
+        .hs-entry { display: flex; justify-content: space-between; color: #f1c40f; font-family: monospace; font-size: 14px; border-bottom: 1px dashed #333; padding: 5px 0; }
+        
+        .trash-bubble { position: absolute; background: rgba(255,255,255,0.9); border: 2px solid #00adef; border-radius: 20px; padding: 10px 15px; color: #0a0a0a; font-weight: 900; font-size: 14px; text-transform: uppercase; z-index: 10; pointer-events: none; white-space: nowrap; transform: translate(-50%, -100%); display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .trash-bubble::after { content: ""; position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%); border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid rgba(255,255,255,0.9); }
+        
+        canvas { display: block; width: 100vw; height: 100vh; background: #080808; }
+        #gameCanvas.nightmare-glitch { animation: nightmareGlitch 0.12s steps(2, end) infinite; filter: saturate(1.2) contrast(1.08); }
+        #bonusTimer { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: clamp(80px, 20vw, 150px); color: rgba(241, 196, 15, 0.5); font-weight: 900; display: none; pointer-events: none; z-index: 4; }
+
+        @media (max-width: 768px) {
+            .menu-board { padding: 14px; border-radius: 14px; max-height: 92vh; }
+            .char-card { min-height: 70px; }
+            .char-card img { width: 54px; height: 54px; }
+            .char-info h2 { font-size: 16px; }
+            .char-info p { font-size: 11px; }
+            .btn { font-size: 15px; padding: 13px 16px; }
+            #alibiBtn { font-size: 16px; padding: 11px 15px; }
+            #hud { top: max(8px, env(safe-area-inset-top)); left: max(8px, env(safe-area-inset-left)); right: max(8px, env(safe-area-inset-right)); }
+            .progress-container { width: min(44vw, 210px); }
+            #hudTip { max-width: 180px; }
+            #miniMapWrap { width: 108px; height: 108px; }
+            #killFeed { top: max(64px, env(safe-area-inset-top) + 42px); }
+            .map-grid { grid-template-columns: repeat(2, 1fr); }
+            .menu-bottom-tabs { grid-template-columns: repeat(2, 1fr); }
+            .hud-left { gap: 6px; }
+            .hud-box { font-size: 13px; padding: 5px 8px; }
+            #hudTip, #hudObjective { font-size: 10px; max-width: 170px; }
+            .audio-panel { width: 90vw; }
+            .mode-grid { grid-template-columns: 1fr; }
+            .map-focus-card { width: 100%; }
+        }
+
+        @keyframes pop {
+            0% { transform: translateX(-50%) scale(0.7); opacity: 0; }
+            55% { transform: translateX(-50%) scale(1.08); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1); opacity: 1; }
+        }
+
+        @keyframes nightmareGlitch {
+            0% { transform: translate(0, 0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(2px, -1px); }
+            60% { transform: translate(-1px, -1px); }
+            80% { transform: translate(1px, 1px); }
+            100% { transform: translate(0, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="uiLayer">
+        <div id="startMenu" class="menu-board menu-screen">
+            <div class="menu-top-bar">
+                <button class="menu-utility-btn" onclick="openHubWindow('aboutMenu')">About</button>
+                <button class="menu-utility-btn" onclick="openHubWindow('settingsMenu')">Postavke</button>
+            </div>
+            <h1>EFAC: ENTERPRISE</h1>
+            <p class="subtitle">Zatvori krug da preuzmeš Enterprise. Prst bilo gdje za joystick!</p>
+
+            <div class="menu-section">
+                <h3 class="menu-section-title">Odabir karte</h3>
+                <div class="map-carousel">
+                    <button class="map-nav-btn" onclick="shiftMap(-1)">‹</button>
+                    <div id="mapFocusCard" class="map-card map-focus-card"></div>
+                    <button class="map-nav-btn" onclick="shiftMap(1)">›</button>
+                </div>
+                <p class="menu-window-note" id="mapLockHint">Mapa 1/9</p>
+                <div class="menu-window-actions">
+                    <button class="btn" onclick="openHubWindow('charactersMenu')" style="margin:0;">Likovi i start</button>
+                </div>
+            </div>
+
+            <div class="menu-bottom-tabs">
+                <button class="menu-tab" onclick="openHubWindow('charactersMenu')">Igrači</button>
+                <button class="menu-tab" onclick="openHubWindow('metaShopMenu')">Powerup shop</button>
+                <button class="menu-tab" onclick="openHubWindow('topMenu')">Top score</button>
+                <button class="menu-tab" onclick="openHubWindow('dailyMenu')">Daily rewards</button>
+                <button class="menu-tab" onclick="openHubWindow('modeMenu')">Game mode</button>
+            </div>
+            <p id="menuTabHint" class="menu-window-note">Svaki izbornik se sada otvara u vlastitom prozoru.</p>
+        </div>
+
+        <div id="charactersMenu" class="menu-board menu-screen" style="display:none;">
+            <h1>Odabir Likova</h1>
+            <p class="subtitle">Odaberi člana ekipe i pokreni odabranu mapu.</p>
+            <div class="char-grid">
+                <div class="char-card" onclick="startGame('zrina')">
+                    <img id="imgCardZrina" src="zrina.png" alt="Zrina">
+                    <div class="char-info"><h2>Zrina</h2><p>Dev-Hack: vidi prilike i puni blagajnu.</p><span class="char-tag">Mozak operacije</span><div class="skin-choice-row"><button id="skinBtnZrinaRender" class="skin-choice-btn" onclick="setCardSkin('zrina','render',event)">Render</button><button id="skinBtnZrinaReal" class="skin-choice-btn" onclick="setCardSkin('zrina','real',event)">Real</button></div></div>
+                </div>
+                <div class="char-card" onclick="startGame('maminjo')">
+                    <img id="imgCardMaminjo" src="maminjo.png" alt="Maminjo">
+                    <div class="char-info"><h2>Maminjo</h2><p>Gasi emocije. Stranke ga vide tek kasno.</p><span class="char-tag">Stealth 150m</span><div class="skin-choice-row"><button id="skinBtnMaminjoRender" class="skin-choice-btn" onclick="setCardSkin('maminjo','render',event)">Render</button><button id="skinBtnMaminjoReal" class="skin-choice-btn" onclick="setCardSkin('maminjo','real',event)">Real</button></div></div>
+                </div>
+                <div class="char-card" onclick="startGame('zdero')">
+                    <img id="imgCardZdero" src="zdero.png" alt="Ždero">
+                    <div class="char-info"><h2>Ždero</h2><p>Nemjerljivi učinak i želudac od čelika.</p><span class="char-tag">Tank + strpljenje</span><div class="skin-choice-row"><button id="skinBtnZderoRender" class="skin-choice-btn" onclick="setCardSkin('zdero','render',event)">Render</button><button id="skinBtnZderoReal" class="skin-choice-btn" onclick="setCardSkin('zdero','real',event)">Real</button></div></div>
+                </div>
+                <div class="char-card" onclick="startGame('franc')">
+                    <img id="imgCardFranc" src="franc.png" alt="Franc">
+                    <div class="char-info"><h2>Franc</h2><p>Top, Vrh, Nikad bolje. Turbo ulazi.</p><span class="char-tag">Sprint specijalist</span><div class="skin-choice-row"><button id="skinBtnFrancRender" class="skin-choice-btn" onclick="setCardSkin('franc','render',event)">Render</button><button id="skinBtnFrancReal" class="skin-choice-btn" onclick="setCardSkin('franc','real',event)">Real</button></div></div>
+                </div>
+            </div>
+            <button class="btn menu-close-btn" onclick="openHubWindow('startMenu')">Natrag</button>
+        </div>
+
+        <div id="metaShopMenu" class="menu-board menu-screen" style="display:none;">
+            <h1>Powerup Shop</h1>
+            <div id="metaWallet" class="meta-wallet">Novčanika: 0 tokena</div>
+            <div class="shop-grid">
+                <div class="shop-item"><h3 class="shop-title">Start Shield</h3><p class="shop-desc">+120 shield na početku partije.</p><button class="btn" style="width:100%; padding:8px;" onclick="buyMetaItem('shield')">Kupi (120)</button></div>
+                <div class="shop-item"><h3 class="shop-title">Start Boost</h3><p class="shop-desc">+0.2 brzine na startu.</p><button class="btn" style="width:100%; padding:8px;" onclick="buyMetaItem('speed')">Kupi (100)</button></div>
+                <div class="shop-item"><h3 class="shop-title">Extra Alibi</h3><p class="shop-desc">+1 dodatni panic gumb.</p><button class="btn" style="width:100%; padding:8px;" onclick="buyMetaItem('alibi')">Kupi (160)</button></div>
+                <div class="shop-item"><h3 class="shop-title">Start Cash</h3><p class="shop-desc">+100 EUR na startu.</p><button class="btn" style="width:100%; padding:8px;" onclick="buyMetaItem('cash')">Kupi (140)</button></div>
+            </div>
+            <p id="metaInventoryInfo" class="menu-window-note">Inventar: učitavanje...</p>
+            <button class="btn menu-close-btn" onclick="openHubWindow('startMenu')">Natrag</button>
+        </div>
+
+        <div id="topMenu" class="menu-board menu-screen" style="display:none;">
+            <h1>Top Score</h1>
+            <div style="background:#0a0a0a; padding:10px; border-radius:10px; border:1px solid #333;">
+                <h3 style="color:white; margin:0 0 5px 0; font-size:14px;">TOP ENTERPRISE</h3>
+                <div id="mainHsList"></div>
+            </div>
+            <button class="btn menu-close-btn" onclick="openHubWindow('startMenu')">Natrag</button>
+        </div>
+
+        <div id="dailyMenu" class="menu-board menu-screen" style="display:none;">
+            <h1>Daily Rewards</h1>
+            <div class="lore-card" id="dailyInfoCard">Dnevna nagrada učitavanje...</div>
+            <button class="btn" id="dailyClaimBtn" onclick="claimDailyReward()" style="width:100%;">Preuzmi reward</button>
+            <button class="btn menu-close-btn" onclick="openHubWindow('startMenu')">Natrag</button>
+        </div>
+
+        <div id="modeMenu" class="menu-board menu-screen" style="display:none;">
+            <h1>Game Mode</h1>
+            <p class="subtitle">Odaberi tempo i agresivnost NPC-a.</p>
+            <div class="mode-grid">
+                <button id="modeBtnCasual" class="mode-btn" onclick="setGameMode('casual')">Casual</button>
+                <button id="modeBtnNormal" class="mode-btn" onclick="setGameMode('normal')">Normal</button>
+                <button id="modeBtnHard" class="mode-btn" onclick="setGameMode('hard')">Hard</button>
+            </div>
+            <p id="modeHint" class="menu-window-note">Aktivni mode: Normal</p>
+            <button class="btn menu-close-btn" onclick="openHubWindow('startMenu')">Natrag</button>
+        </div>
+
+        <div id="aboutMenu" class="menu-board menu-screen" style="display:none; text-align:left;">
+            <h1>ABOUT</h1>
+            <div class="lore-card" style="font-size:12px; line-height:1.5;">
+                <strong>EFAC Fantastična Četvorka</strong><br><br>
+                Sve je počelo kad je statistika počela gorjeti, telefon nije prestajao zvoniti, a ulaz je zatrpala kolona bez termina. Dok su drugi paničarili, četvorka je otvorila improvizirani ratni stožer između salona, prijema i podruma.<br><br>
+                Zrina je spojila dev-hack i hladnu glavu, Maminjo je nestao iz radara i uletio gdje nitko ne očekuje, Ždero je držao liniju kao tenk, a Franc je dizao ritam kad je sve pucalo po šavovima. Cilj je uvijek isti: zatvori krug, vrati kontrolu, arhiviraj kaos.<br><br>
+                Iza svakog osvojenog polja stoji ista poruka: enterprise se ne spašava jednom velikom akcijom, nego nizom pametnih poteza pod pritiskom.
+            </div>
+            <button class="btn menu-close-btn" onclick="openHubWindow('startMenu')">Natrag</button>
+        </div>
+
+        <div id="settingsMenu" class="menu-board menu-screen" style="display:none; text-align:left;">
+            <h1>Postavke</h1>
+            <p class="audio-row-label">Muzika</p>
+            <div id="menuMusicHud" class="music-hud" style="max-width:100%;">
+                <button id="menuMusicToggleBtn" class="music-btn" onclick="togglePlaylist()">MUSIC: ON</button>
+                <button id="menuMusicNextBtn" class="music-btn" onclick="nextPlaylistTrack()">NEXT ▶</button>
+                <button id="menuMusicShuffleBtn" class="music-btn" onclick="togglePlaylistShuffle()">SHUFFLE: ON</button>
+                <input id="menuMusicVolumeSlider" class="music-volume" type="range" min="0" max="100" step="1" value="20" oninput="setPlaylistVolume(this.value)">
+                <div id="menuMusicNow" class="music-now">♪ PLAYLIST</div>
+            </div>
+            <p class="audio-row-label" style="margin-top:8px;">SFX glasnoća</p>
+            <input id="menuSfxVolumeSlider" class="music-volume" type="range" min="0" max="100" step="1" value="40" oninput="setSfxVolume(this.value)">
+            <p class="audio-row-label" style="margin-top:8px;">Kvaliteta</p>
+            <select class="menu-select" onchange="setQualityPreset(this.value)">
+                <option value="auto">Auto</option>
+                <option value="performance">Performance</option>
+                <option value="balanced" selected>Balanced</option>
+                <option value="ultra">Ultra</option>
+            </select>
+            <button class="btn menu-close-btn" onclick="openHubWindow('startMenu')">Natrag</button>
+        </div>
+
+        <div id="mapCompleteMenu" class="menu-board menu-screen" style="display:none;">
+            <h1 style="color:#2ecc71;">KARTA ZAVRŠENA</h1>
+            <p class="subtitle" id="mapCompleteText">Napredak 100%</p>
+            <div class="menu-window-actions">
+                <button class="btn" style="margin:0;" onclick="replayCurrentMap()">Ponovi mapu</button>
+                <button class="btn" style="margin:0;" onclick="openHubWindow('startMenu')">Natrag u glavni meni</button>
+            </div>
+        </div>
+
+        <div id="shopMenu" class="menu-board menu-screen" style="display:none;">
+            <h1 style="color:#2ecc71;">OSVOJENO!</h1>
+            <p class="subtitle" style="color:#fff;">Stanje blagajne: <span id="shopEuros" style="color:#f1c40f; font-weight:bold;">0</span> €</p>
+            <div class="shop-grid">
+                <div class="shop-item"><div class="shop-info"><h3 class="shop-title">Tuning <span id="lvlSpeed">Lvl 1</span></h3></div><button class="btn" id="btnBuySpeed" onclick="buyUpgrade('speed')" style="width:100%; padding:8px;">Kupi (<span id="costSpeed">50</span>)</button></div>
+                <div class="shop-item"><div class="shop-info"><h3 class="shop-title">Prodaja <span id="lvlIncome">Lvl 1</span></h3></div><button class="btn" id="btnBuyIncome" onclick="buyUpgrade('income')" style="width:100%; padding:8px;">Kupi (<span id="costIncome">50</span>)</button></div>
+                <div class="shop-item"><div class="shop-info"><h3 class="shop-title">Kava za van <span id="lvlShield">Lvl 1</span></h3></div><button class="btn" id="btnBuyShield" onclick="buyUpgrade('shield')" style="width:100%; padding:8px;">Kupi (<span id="costShield">100</span>)</button></div>
+                <div class="shop-item"><div class="shop-info"><h3 class="shop-title">Želudac <span id="lvlDuration">Lvl 1</span></h3></div><button class="btn" id="btnBuyDuration" onclick="buyUpgrade('duration')" style="width:100%; padding:8px;">Kupi (<span id="costDuration">100</span>)</button></div>
+                <div class="shop-item"><div class="shop-info"><h3 class="shop-title">Retrovizor <span id="lvlZoom">Lvl 1</span></h3></div><button class="btn" id="btnBuyZoom" onclick="buyUpgrade('zoom')" style="width:100%; padding:8px;">Kupi (<span id="costZoom">150</span>)</button></div>
+                <div class="shop-item"><div class="shop-info"><h3 class="shop-title">Alibi <span id="lvlLife">Lvl 1</span></h3></div><button class="btn" id="btnBuyLife" onclick="buyUpgrade('life')" style="width:100%; padding:8px;">Kupi (<span id="costLife">200</span>)</button></div>
+            </div>
+            <button class="btn" onclick="nextLevel()" style="width:100%; margin-top:15px;">POVRATAK U MENU</button>
+        </div>
+
+        <div id="gameOver" class="menu-board menu-screen" style="display:none;">
+            <h1 style="color:#e74c3c;">SMJENA GOTOVA!</h1>
+            <p id="deathReason" style="color:#ddd; font-size:16px; margin-bottom: 10px;"></p>
+            <div style="font-size: 18px; margin: 15px 0;">Ukupno zarađeno: <span id="finalScore" style="color:#2ecc71;">0</span> €</div>
+            <div style="font-size:16px; margin:8px 0;">Tokeni ove runde: <span id="goTokens" style="color:#f1c40f; font-weight:bold;">0</span> 🪙 <span style="color:#888; font-size:12px;">(ubojstva + rezultat)</span></div>
+            <div style="font-size:14px; color:#cfe7f7; margin:6px 0;">Arhivirano birokrata (Kills): <span id="goKills">0</span></div>
+            <div style="font-size:14px; color:#cfe7f7; margin:6px 0;">Pokupljeno kava/bureka: <span id="goCoffeeBurek">0</span></div>
+            <div style="font-size:14px; color:#cfe7f7; margin:6px 0;">Preživljeno Šefovih radara: <span id="goBossSurvived">0</span></div>
+            
+            <div id="newHighScoreEntry" style="display:none; background:#222; padding:10px; border-radius:10px; margin-bottom: 10px;">
+                <p style="color:#f1c40f; margin:0 0 5px 0; font-size:14px;">NOVI REKORD! Inicijali:</p>
+                <input type="text" id="hsInitials" class="hs-input" maxlength="3" value="AAA">
+                <button class="btn" onclick="saveHighScore()" style="margin:0 0 0 10px; padding:6px 12px;">SPREMI</button>
+            </div>
+
+            <div style="background:#0a0a0a; padding:10px; border-radius:10px; border:1px solid #333;">
+                <h3 style="color:white; margin:0 0 5px 0; font-size:14px;">TOP ENTERPRISE</h3>
+                <div id="hsList"></div>
+            </div>
+            <button class="btn" onclick="openHubWindow('startMenu')" style="margin-top: 15px; width:100%;">NOVA SMJENA</button>
+        </div>
+    </div>
+
+    <div id="hud">
+        <div class="hud-left">
+            <div class="hud-box">💵 <span id="score">0</span> <span id="extraLifeIcon" class="extra-life-badge" style="display:none;">❤️</span></div>
+            <div class="hud-box" style="font-size:13px;">🪙 <span id="hudTokens">0</span></div>
+            <div class="hud-box" id="hudTip">Savjet: izađi iz zone, zatvori krug, vrati se živ.</div>
+            <div class="hud-box" id="hudObjective">Cilj: Učitavanje...</div>
+            <button id="pauseToggleBtn" class="music-btn" onclick="togglePauseFromUi()" style="width:fit-content;">PAUZA</button>
+            <button id="alibiBtn" onclick="activateAlibi()">PANIK GUMB! <span id="alibiCount" class="alibi-badges">x1</span></button>
+        </div>
+        <div class="progress-container">
+            <div class="level-text"><span id="hudLevelName">SALON</span><span id="nightmareBadge" class="nightmare-badge">RADAR OFF</span></div>
+            <div class="progress-fill" id="progFill"></div>
+            <div class="progress-text">Runda: <span id="progText">0.0%</span> &nbsp;|&nbsp; Ukupno: <span id="progTotal">0%</span>/100%</div>
+        </div>
+    </div>
+    
+    <div id="powerupMsg">TOP VRH!</div>
+    <div id="hitFlash"></div>
+    <div id="bossBarWrap"><div id="bossBarFill"></div><div id="bossBarText">BOSS</div></div>
+    <div id="killFeed"></div>
+    <div id="miniMapWrap"><canvas id="miniMapCanvas" width="130" height="130"></canvas></div>
+    <div id="pauseBadge">
+        <div class="pause-title">SMJENA PAUZIRANA - Stranke čekaju...</div>
+        <div class="pause-actions">
+            <button class="btn" onclick="resumeFromPause()">NASTAVI</button>
+            <button class="btn" onclick="restartCurrentLevelFromPause()">RESTART LEVEL</button>
+        </div>
+        <div class="audio-panel">
+            <p class="audio-row-label">Muzika</p>
+            <div id="pauseMusicHud" class="music-hud">
+                <button id="pauseMusicToggleBtn" class="music-btn" onclick="togglePlaylist()">MUSIC: ON</button>
+                <button id="pauseMusicNextBtn" class="music-btn" onclick="nextPlaylistTrack()">NEXT ▶</button>
+                <button id="pauseMusicShuffleBtn" class="music-btn" onclick="togglePlaylistShuffle()">SHUFFLE: ON</button>
+                <input id="pauseMusicVolumeSlider" class="music-volume" type="range" min="0" max="100" step="1" value="20" oninput="setPlaylistVolume(this.value)">
+                <div id="pauseMusicNow" class="music-now">♪ PLAYLIST</div>
+            </div>
+            <p class="audio-row-label" style="margin-top:8px;">SFX glasnoća</p>
+            <input id="pauseSfxVolumeSlider" class="music-volume" type="range" min="0" max="100" step="1" value="40" oninput="setSfxVolume(this.value)">
+        </div>
+    </div>
+    <div id="bonusTimer">6</div>
+    <div id="trashBubble" class="trash-bubble">Nemjerljivi!</div>
+    <canvas id="gameCanvas"></canvas>
+
+<script>
+    function safeDraw(imgObj, x, y, w, h) {
+        if (imgObj && imgObj.complete && imgObj.naturalWidth !== 0) {
+            ctx.drawImage(imgObj, x, y, w, h);
+            return true;
+        }
+        return false;
+    }
+
+    function drawRoundedRect(x, y, w, h, r) {
+        const rr = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+        ctx.beginPath();
+        ctx.moveTo(x + rr, y);
+        ctx.arcTo(x + w, y, x + w, y + h, rr);
+        ctx.arcTo(x + w, y + h, x, y + h, rr);
+        ctx.arcTo(x, y + h, x, y, rr);
+        ctx.arcTo(x, y, x + w, y, rr);
+        ctx.closePath();
+    }
+
+    // --- UČITAVANJE SVIH TVOJIH TEKSTURA ---
+    const imgs = { 
+        zrina: new Image(), maminjo: new Image(), zdero: new Image(), franc: new Image(),
+        zrina_real: new Image(), maminjo_real: new Image(), zdero_real: new Image(), franc_real: new Image(),
+        boss: new Image(), npc1: new Image(), npc2: new Image(), npc3: new Image(), npc_rodjak: new Image(), stranka: new Image(),
+        floor: new Image(), floor_alt: new Image(), glass: new Image(), wall: new Image(), wall_alt: new Image(), euro50: new Image(), euro: new Image(),
+        burek: new Image(), coffee: new Image(),
+        barrel: new Image(), barrel_alt: new Image(), crate: new Image(), fotelja: new Image(), kauc: new Image(), stol: new Image(), visoki_stol: new Image(), plant: new Image(), pot: new Image(),
+        car_citan: new Image(), car_smart: new Image(), car_x: new Image(), car_boss: new Image()
+    };
+    
+    // Putanje do tvojih slika u folderu
+    imgs.zrina.src = 'zrina.png'; imgs.maminjo.src = 'maminjo.png'; imgs.zdero.src = 'zdero.png'; imgs.franc.src = 'franc.png';
+    imgs.zrina_real.src = 'zrina – kopija.png'; imgs.maminjo_real.src = 'maminjo – kopija.png'; imgs.zdero_real.src = 'zdero – kopija.png'; imgs.franc_real.src = 'franc – kopija.png';
+    imgs.boss.src = 'boss.png'; imgs.npc1.src = 'NPC1.png'; imgs.npc2.src = 'NPC2.png'; imgs.npc3.src = 'NPC3.png'; imgs.npc_rodjak.src = 'npc_rodjak.png'; imgs.stranka.src = 'stranka.png';
+    imgs.floor.src = 'floor.jpg'; imgs.floor_alt.src = 'plocice2.png'; imgs.glass.src = 'staklo.jpg'; imgs.wall.src = 'wall.jpg'; imgs.wall_alt.src = 'zid2.png'; imgs.euro50.src = '50euro.png'; imgs.euro.src = 'euro.png';
+    imgs.burek.src = 'burek.png'; imgs.coffee.src = 'coffee.png';
+    imgs.barrel.src = 'barrel.png'; imgs.barrel_alt.src = 'barrel.jpg'; imgs.crate.src = 'crate.jpg'; imgs.fotelja.src = 'fotelja.png'; imgs.kauc.src = 'kauc.png'; imgs.stol.src = 'stol.jpg'; imgs.visoki_stol.src = 'visoki_stol.png'; imgs.plant.src = 'plant.jpg'; imgs.pot.src = 'pot.jpg';
+    imgs.car_citan.src = 'car_citan.png'; imgs.car_smart.src = 'car_smart.png'; imgs.car_x.src = 'car_x.png'; imgs.car_boss.src = 'car_boss.png';
+
+    // Audios
+    let audioCtx = null;
+    let sfxVolume = 0.4;
+    function ensureAudioCtx() {
+        if (!audioCtx) {
+            const Ctx = window.AudioContext || window.webkitAudioContext;
+            if (Ctx) audioCtx = new Ctx();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+        return audioCtx;
+    }
+
+    function triggerSfx(kind = 'tap') {
+        const ctxLocal = ensureAudioCtx();
+        if (!ctxLocal || sfxVolume <= 0.001) return;
+
+        const now = ctxLocal.currentTime;
+        const osc = ctxLocal.createOscillator();
+        const gain = ctxLocal.createGain();
+        osc.type = kind === 'kill' ? 'square' : (kind === 'capture' ? 'triangle' : 'sine');
+
+        const base = kind === 'kill' ? 160 : (kind === 'powerup' ? 520 : (kind === 'capture' ? 330 : 280));
+        const peak = kind === 'kill' ? 110 : (kind === 'powerup' ? 780 : (kind === 'capture' ? 500 : 360));
+        osc.frequency.setValueAtTime(base, now);
+        osc.frequency.exponentialRampToValueAtTime(peak, now + 0.06);
+
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(Math.max(0.001, sfxVolume * 0.18), now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+
+        osc.connect(gain);
+        gain.connect(ctxLocal.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+    }
+
+    const playlistTracks = [
+        { title: 'Significan', file: 'Significan.mp3' },
+        { title: 'Jankomirblues', file: 'Jankomirblues.mp3' },
+        { title: 'Linijafronta', file: 'Linijafronta.mp3' },
+        { title: 'osamujutro', file: 'osamujutro.mp3' },
+        { title: 'Nemjerljivi', file: 'nemjerljivi.mp3' },
+        { title: 'Smart', file: 'smart.mp3' },
+        { title: 'Stuttgart', file: 'stuttgart.mp3' }
+    ];
+    const playlistAudio = new Audio();
+    const playlistSaved = (() => {
+        try { return JSON.parse(localStorage.getItem('efac_playlist_v1') || '{}'); }
+        catch (_) { return {}; }
+    })();
+    let playlistEnabled = playlistSaved.enabled !== false;
+    let playlistShuffle = playlistSaved.shuffle !== false;
+    let playlistIndex = Number.isInteger(playlistSaved.index) ? playlistSaved.index : 0;
+    let playlistVolume = Number.isFinite(playlistSaved.volume) ? Math.max(0, Math.min(1, playlistSaved.volume)) : 0.20;
+    sfxVolume = Number.isFinite(playlistSaved.sfxVolume) ? Math.max(0, Math.min(1, playlistSaved.sfxVolume)) : 0.40;
+
+    playlistAudio.preload = 'auto';
+    playlistAudio.volume = playlistVolume;
+    playlistAudio.addEventListener('ended', () => nextPlaylistTrack(true));
+
+    function persistPlaylistSettings() {
+        localStorage.setItem('efac_playlist_v1', JSON.stringify({
+            enabled: playlistEnabled,
+            shuffle: playlistShuffle,
+            index: playlistIndex,
+            volume: playlistVolume,
+            sfxVolume: sfxVolume
+        }));
+    }
+
+    function updateAudioUi() {
+        const pauseBtn = document.getElementById('pauseToggleBtn');
+        const toggleButtons = [
+            document.getElementById('pauseMusicToggleBtn'),
+            document.getElementById('menuMusicToggleBtn')
+        ].filter(Boolean);
+        const shuffleButtons = [
+            document.getElementById('pauseMusicShuffleBtn'),
+            document.getElementById('menuMusicShuffleBtn')
+        ].filter(Boolean);
+        const volumeSliders = [
+            document.getElementById('pauseMusicVolumeSlider'),
+            document.getElementById('menuMusicVolumeSlider')
+        ].filter(Boolean);
+        const sfxSliders = [
+            document.getElementById('pauseSfxVolumeSlider'),
+            document.getElementById('menuSfxVolumeSlider')
+        ].filter(Boolean);
+        const nowLabels = [
+            document.getElementById('pauseMusicNow'),
+            document.getElementById('menuMusicNow')
+        ].filter(Boolean);
+
+        let isPausedNow = false;
+        try { isPausedNow = gameState === 'PAUSED'; } catch (_) { isPausedNow = false; }
+        if (pauseBtn) pauseBtn.innerText = isPausedNow ? 'NASTAVI' : 'PAUZA';
+
+        toggleButtons.forEach((toggleBtn) => {
+            toggleBtn.innerText = playlistEnabled ? 'MUSIC: ON' : 'MUSIC: OFF';
+            toggleBtn.className = playlistEnabled ? 'music-btn' : 'music-btn off';
+        });
+        shuffleButtons.forEach((shuffleBtn) => {
+            shuffleBtn.innerText = playlistShuffle ? 'SHUFFLE: ON' : 'SHUFFLE: OFF';
+            shuffleBtn.className = playlistShuffle ? 'music-btn' : 'music-btn off';
+        });
+        volumeSliders.forEach((slider) => {
+            slider.value = String(Math.round(playlistVolume * 100));
+        });
+        sfxSliders.forEach((slider) => {
+            slider.value = String(Math.round(sfxVolume * 100));
+        });
+
+        const current = playlistTracks[playlistIndex];
+        nowLabels.forEach((now) => {
+            now.innerText = current ? `♪ ${current.title}` : '♪ PLAYLIST';
+        });
+    }
+
+    function loadPlaylistTrack(idx) {
+        if (!playlistTracks.length) return;
+        playlistIndex = ((idx % playlistTracks.length) + playlistTracks.length) % playlistTracks.length;
+        const track = playlistTracks[playlistIndex];
+        if (!track) return;
+        if (!playlistAudio.src || !playlistAudio.src.endsWith(track.file)) {
+            playlistAudio.src = track.file;
+        }
+        updateAudioUi();
+    }
+
+    function playPlaylist() {
+        if (!playlistEnabled || !playlistTracks.length) return;
+        loadPlaylistTrack(playlistIndex);
+        ensureAudioCtx();
+        playlistAudio.play().catch(() => {});
+    }
+
+    function togglePlaylist() {
+        playlistEnabled = !playlistEnabled;
+        if (playlistEnabled) {
+            playPlaylist();
+            showMsg('PLAYLIST ON', '#2ecc71');
+        } else {
+            playlistAudio.pause();
+            showMsg('PLAYLIST OFF', '#999');
+        }
+        persistPlaylistSettings();
+        updateAudioUi();
+        triggerSfx('tap');
+    }
+
+    function togglePlaylistShuffle() {
+        playlistShuffle = !playlistShuffle;
+        persistPlaylistSettings();
+        updateAudioUi();
+        showMsg(playlistShuffle ? 'SHUFFLE ON' : 'SHUFFLE OFF', '#00adef');
+        triggerSfx('tap');
+    }
+
+    function setPlaylistVolume(sliderValue) {
+        const v = Math.max(0, Math.min(100, Number(sliderValue) || 0));
+        playlistVolume = v / 100;
+        playlistAudio.volume = playlistVolume;
+        persistPlaylistSettings();
+        updateAudioUi();
+    }
+
+    function setSfxVolume(sliderValue) {
+        const v = Math.max(0, Math.min(100, Number(sliderValue) || 0));
+        sfxVolume = v / 100;
+        persistPlaylistSettings();
+        updateAudioUi();
+    }
+
+    function armBackPause() {
+        if (backPauseArmed) return;
+        try {
+            history.pushState({ efacPauseGuard: true }, '');
+            backPauseArmed = true;
+        } catch (_) {}
+    }
+
+    function setPauseState(nextPaused, reason = '') {
+        if (nextPaused) {
+            if (!(gameState === 'PLAYING' || gameState === 'BONUS')) return;
+            lastActiveGameState = gameState;
+            const now = performance.now();
+            if (bossRadarTimeoutId) {
+                pausedBossRadarRemainingMs = Math.max(0, bossRadarDueAtMs - now);
+                clearTimeout(bossRadarTimeoutId);
+                bossRadarTimeoutId = null;
+            }
+            if (bossActiveTimeoutId) {
+                pausedBossActiveRemainingMs = Math.max(0, bossActiveUntilMs - now);
+                clearTimeout(bossActiveTimeoutId);
+                bossActiveTimeoutId = null;
+            }
+            if (lastActiveGameState === 'BONUS' && bonusInterval) {
+                clearInterval(bonusInterval);
+                bonusInterval = null;
+            }
+            gameState = 'PAUSED';
+            const badge = document.getElementById('pauseBadge');
+            if (badge) badge.style.display = 'flex';
+            if (reason === 'back') showMsg('SMJENA PAUZIRANA - Stranke čekaju...', '#f1c40f');
+            updateAudioUi();
+            return;
+        }
+
+        if (gameState !== 'PAUSED') return;
+        gameState = (lastActiveGameState === 'BONUS') ? 'BONUS' : 'PLAYING';
+        if (gameState === 'BONUS' && !bonusInterval) startBonusCountdownTimer();
+        if (pausedBossRadarRemainingMs > 0) {
+            scheduleBossRadar(pausedBossRadarRemainingMs);
+            pausedBossRadarRemainingMs = 0;
+        }
+        if (bossActive && pausedBossActiveRemainingMs > 0) {
+            bossActiveUntilMs = performance.now() + pausedBossActiveRemainingMs;
+            bossActiveTimeoutId = setTimeout(endBossEncounter, pausedBossActiveRemainingMs);
+            pausedBossActiveRemainingMs = 0;
+        }
+        const badge = document.getElementById('pauseBadge');
+        if (badge) badge.style.display = 'none';
+        updateAudioUi();
+        lastFrameTime = 0;
+        requestAnimationFrame(gameLoop);
+    }
+
+    function togglePauseFromUi() {
+        if (gameState === 'PAUSED') setPauseState(false);
+        else setPauseState(true);
+    }
+
+    function resumeFromPause() {
+        setPauseState(false);
+    }
+
+    function restartCurrentLevelFromPause() {
+        const badge = document.getElementById('pauseBadge');
+        if (badge) badge.style.display = 'none';
+        gameState = 'PLAYING';
+        lastActiveGameState = 'PLAYING';
+        showMsg('RESTART LEVEL', '#f1c40f');
+        startLevel();
+    }
+
+    function nextPlaylistTrack(fromEnded = false) {
+        if (!playlistTracks.length) return;
+        let nextIdx = playlistIndex + 1;
+        if (playlistShuffle && playlistTracks.length > 1) {
+            do {
+                nextIdx = Math.floor(Math.random() * playlistTracks.length);
+            } while (nextIdx === playlistIndex);
+        }
+        loadPlaylistTrack(nextIdx);
+        if (playlistEnabled) {
+            playlistAudio.currentTime = 0;
+            playlistAudio.play().catch(() => {});
+        }
+        persistPlaylistSettings();
+        if (!fromEnded) showMsg(`SADA SVIRA: ${playlistTracks[playlistIndex].title}`, '#2ecc71');
+        if (!fromEnded) triggerSfx('tap');
+    }
+
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            const swVersion = (document.lastModified || 'v1').replace(/[^0-9A-Za-z]/g, '');
+            navigator.serviceWorker.register(`./sw.js?v=${swVersion}`, { updateViaCache: 'none' }).then((reg) => {
+                reg.update().catch(() => {});
+            }).catch(() => {});
+        });
+    }
+    // Canvas se automatski crta u draw() kada je gameState 'PLAYING'
+    const miniMapCanvas = document.getElementById('miniMapCanvas');
+    const miniMapCtx = miniMapCanvas ? miniMapCanvas.getContext('2d') : null;
+    updateAudioUi();
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+
+    const TILE = 25; const COLS = 112; const ROWS = 112; 
+    const OBSTACLE_SIZE_TILES = 5;
+    const OBSTACLE_SIZE_BY_TYPE = {
+        barrel: 4,
+        barrel_alt: 4,
+        crate: 4,
+        plant: 4,
+        pot: 4,
+        fotelja: 5,
+        stol: 5,
+        visoki_stol: 5,
+        kauc: 6
+    };
+    const OBSTACLE_DRAW_SCALE_BY_TYPE = {
+        barrel: 1.2,
+        barrel_alt: 1.2,
+        crate: 1.2,
+        plant: 1.25,
+        pot: 1.2,
+        fotelja: 1.3,
+        stol: 1.3,
+        visoki_stol: 1.35,
+        kauc: 1.4
+    };
+    const MAP_W = COLS * TILE; const MAP_H = ROWS * TILE;
+    const TOTAL_TILES = COLS * ROWS;
+    let grid = new Array(ROWS).fill(0).map(() => new Array(COLS).fill(0));
+    
+    let gameState = 'START'; let gameLoopId; 
+    let bankEuros = 0; let totalEurosThisRun = 0; 
+    
+    const maps = ['Salon', 'Aktivni prijem', 'Kancelarija', 'Radiona', 'Praona', 'Skladište', 'Parking', 'Uprava', 'Podrum'];
+    const mapShapes = ['Oval', 'U-zona', 'Dvorana', 'Kosi blok', 'Dvorište', 'Labirint', 'Ravni parking', 'Premium kat', 'Podrumski bunker'];
+    const mapProgressByName = (() => {
+        try { return JSON.parse(localStorage.getItem('efac_map_progress_v1') || '{}'); }
+        catch (_) { return {}; }
+    })();
+    let selectedMapIdx = 0;
+    let currentLevelIdx = 0; let targetPercentage = 100;
+    const PRESTIGE_KEY = 'efac_prestige_v1';
+    let prestigeLevel = Math.max(0, Number(localStorage.getItem(PRESTIGE_KEY) || '0'));
+    let mapClearHandled = false;
+
+    const metaPrices = { shield: 120, speed: 100, alibi: 160, cash: 140 };
+    let metaWallet = Number(localStorage.getItem('efac_meta_wallet_v1') || '0');
+    const metaInventory = (() => {
+        try { return JSON.parse(localStorage.getItem('efac_meta_inventory_v1') || '{}'); }
+        catch (_) { return {}; }
+    })();
+    metaInventory.shield = metaInventory.shield || 0;
+    metaInventory.speed = metaInventory.speed || 0;
+    metaInventory.alibi = metaInventory.alibi || 0;
+    metaInventory.cash = metaInventory.cash || 0;
+
+    let selectedGameMode = localStorage.getItem('efac_game_mode_v1') || 'normal';
+    let modeAggroOffset = 0;
+    let runTokensEarned = 0;
+
+    // Offscreen canvas za teritorij (performance)
+    const territoryCanvas = document.createElement('canvas');
+    territoryCanvas.width = MAP_W; territoryCanvas.height = MAP_H;
+    const tCtx = territoryCanvas.getContext('2d');
+    let territoryDirty = true;
+    // Predizračunane boje po entitetu (cache)
+    const _entTerritoryColor = {};
+    const _entTrailColor = {};
+
+    function markTerritoryDirty() { territoryDirty = true; }
+
+    function redrawTerritoryCache() {
+        if (!grid || !entities) return; // Zaštita prije nego što igra počne
+        tCtx.clearRect(0, 0, MAP_W, MAP_H);
+        // Gradi brzu mapu id→boja
+        const colorMap = {}; // id → fillStyle za teritorij
+        const trailColorMap = {}; // trailId → fillStyle za trag
+        if (entities && Array.isArray(entities)) {
+            entities.forEach(e => {
+                if (e && (!e.dead || e.id === 1)) {
+                    colorMap[e.id] = e.color + 'aa';
+                    trailColorMap[e.trailId] = e.color;
+                }
+            });
+        }
+        for (let y = 0; y < ROWS; y++) {
+            for (let x = 0; x < COLS; x++) {
+                const v = grid[y][x];
+                if (v > 0) {
+                    const isTrail = v > 100;
+                    const col = isTrail ? trailColorMap[v] : colorMap[v];
+                    if (col) {
+                        tCtx.fillStyle = col;
+                        if (isTrail) {
+                            tCtx.fillRect(x * TILE + 2, y * TILE + 2, TILE - 4, TILE - 4);
+                        } else {
+                            tCtx.fillRect(x * TILE, y * TILE, TILE, TILE);
+                            // Lagani bevel na vrhu (bijela linija)
+                            tCtx.fillStyle = 'rgba(255,255,255,0.12)';
+                            tCtx.fillRect(x * TILE, y * TILE, TILE, 3);
+                        }
+                    }
+                }
+            }
+        }
+        territoryDirty = false;
+    }
+    const gameModes = {
+        casual: { label: 'Casual', enemyMul: 0.78, graceMul: 1.45, aggroOffset: -0.08 },
+        normal: { label: 'Normal', enemyMul: 1.0, graceMul: 1.0, aggroOffset: 0.0 },
+        hard: { label: 'Hard', enemyMul: 1.28, graceMul: 0.82, aggroOffset: 0.1 }
+    };
+    
+    let upgrades = { 
+        speed: { level: 1, cost: 50, value: 0 }, income: { level: 1, cost: 50, value: 1 },
+        shield: { level: 1, cost: 100, value: 0 }, duration: { level: 1, cost: 100, value: 1.0 },
+        zoom: { level: 1, cost: 150, value: 1.0 }, life: { level: 1, cost: 200, value: 0.05 }
+    }; 
+    
+    let entities = []; let powerups = []; let poops = []; let coins = []; let obstacles = [];
+    let cameraZoom = 1.0; let targetCameraZoom = 1.0; let bonusTimeRemaining = 0; let bonusInterval;
+
+    let alibiAvailable = 1; let alibiCooldownTimer = 0;
+    const ALIBI_COOLDOWN_MS = 15000; const ALIBI_RANGE_TILES = 10; 
+
+    let bossActive = false; let bossEntity;
+    let bossRadarTimeoutId = null;
+    let bossActiveTimeoutId = null;
+    let bossRadarDueAtMs = 0;
+    let bossActiveUntilMs = 0;
+    let pausedBossRadarRemainingMs = 0;
+    let pausedBossActiveRemainingMs = 0;
+    let bossPenaltyTriggeredThisEncounter = false;
+    const BOSS_INTERVAL_MS = 60000; const BOSS_DURATION_MS = 15000; const BOSS_PUNISH_MS = 10000; let bossPenaltyTimer = 0;
+    let nightmareGlitchTimer = null;
+    let nightmareGlitchPulseTimeout = null;
+    let nightmareRadarHidden = false;
+    let bossPhase = 1;
+    let bossPhaseStartMs = 0;
+    let bossPulseCooldown = 0;
+    let bossBarValue = 1;
+
+    let mouseX = window.innerWidth/2; let mouseY = window.innerHeight/4;
+    let touchStartX = 0, touchStartY = 0, touchX = 0, touchY = 0;
+    let isTouching = false; let touchAngle = -Math.PI/2; let isUsingTouch = false;
+    const IS_MOBILE = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    let qualityPreset = 'auto';
+    let lowFxMode = IS_MOBILE;
+    let frameStepMs = 16.66;
+    let maxCatchupSteps = 3;
+    let playerSpawnGraceMs = 0;
+    let levelSlowUntilMs = 0;
+    let miniMapEnabled = true;
+    let aiBaseAggro = 0.58;
+    let skinMode = 'mixed';
+    let miniMapFrameCounter = 0;
+    let renderModePreset = 'auto';
+    let renderMode = 'flat';
+    let textureTestEnabled = false;
+    let textureStagePreset = 'base';
+    let renderFallbackNotified = false;
+    let currentFloorBlend = null;
+    const savedSkinLocks = (() => {
+        try { return JSON.parse(localStorage.getItem('efac_skin_lock_v1') || '{}'); }
+        catch (_) { return {}; }
+    })();
+    const skinLockByChar = {
+        zrina: 'real',
+        maminjo: 'render',
+        zdero: 'real',
+        franc: 'render',
+        ...savedSkinLocks
+    };
+    let currentObjective = null;
+    let objectiveProgress = 0;
+    let objectiveCompleted = false;
+    let levelStartTimeMs = 0;
+    let lastActiveGameState = 'PLAYING';
+    let backPauseArmed = false;
+    let currentDailyChallenge = null;
+    const dailyChallenges = [
+        { id: 'none', name: 'Standardna smjena', desc: 'Balansirani uvjeti.', apply: () => {} },
+        { id: 'no_shield', name: 'Bez štita', desc: 'Shield powerup ne radi, +20% reward.', apply: () => {} },
+        { id: 'double_aggro', name: 'Duple tenzije', desc: 'NPC su agresivniji.', apply: () => {} },
+        { id: 'time_attack', name: 'Time Attack', desc: '90 sekundi za bonus.', apply: () => {} }
+    ];
+    const PLAYER_SKIN_MAP = {
+        zrina: { render: 'zrina', real: 'zrina_real' },
+        maminjo: { render: 'maminjo', real: 'maminjo_real' },
+        zdero: { render: 'zdero', real: 'zdero_real' },
+        franc: { render: 'franc', real: 'franc_real' }
+    };
+
+    const levelEvents = [
+        { name: 'Prijemni pult', flavor: 'Sjena pada na pult. Kratki krugovi nose lovu.', enemyBonus: 0, extraPowerups: 1 },
+        { name: 'Aktivni prijem', flavor: 'Padobranci bez termina ulaze bez najave.', enemyBonus: 1, extraPowerups: 1 },
+        { name: 'Kancelarija', flavor: 'Excel lebdi, živci padaju.', enemyBonus: 1, extraPowerups: 0 },
+        { name: 'Radiona', flavor: 'Hladan Stuttgart u duši. Ne staj u trag.', enemyBonus: 2, extraPowerups: 0 },
+        { name: 'Praona', flavor: 'Mokar pod, sklizak ego.', enemyBonus: 2, extraPowerups: 1 },
+        { name: 'Skladište', flavor: 'Labirint brojki i kutija.', enemyBonus: 2, extraPowerups: 0 },
+        { name: 'Parking', flavor: 'Ključevi posvuda, izlaza nigdje.', enemyBonus: 3, extraPowerups: 0 },
+        { name: 'Uprava', flavor: 'Formalno sve radi. Realno ne.', enemyBonus: 3, extraPowerups: 1 },
+        { name: 'Podrum', flavor: 'Finalni enterprise kaos.', enemyBonus: 4, extraPowerups: 0 }
+    ];
+    const objectiveTemplates = [
+        { type: 'tiles', target: 900, reward: 140, text: 'Preuzmi 900 polja teritorija' },
+        { type: 'cuts', target: 2, reward: 160, text: 'Arhiviraj 2 protivnika rezanjem traga' },
+        { type: 'survive', target: 45, reward: 120, text: 'Preživi 45 sekundi bez arhive' },
+        { type: 'tiles', target: 1300, reward: 170, text: 'Preuzmi 1300 polja teritorija' },
+        { type: 'cuts', target: 3, reward: 220, text: 'Arhiviraj 3 protivnika' },
+        { type: 'survive', target: 60, reward: 180, text: 'Preživi 60 sekundi pod pritiskom' }
+    ];
+    const LEVEL_TIPS = [
+        'Prijem: kratki krugovi, sigurna zarada.',
+        'Aktivni prijem: reži tragove, ne ego.',
+        'Kancelarija: radar bossa te skenira.',
+        'Radiona: više prepreka, manje romantike.',
+        'Praona: igraj široko i bježi pametno.',
+        'Skladište: napadni kad vide leđa.',
+        'Parking: drži centar, čisti rubove.',
+        'Uprava: sve je osobno, ništa privatno.',
+        'Podrum: završni kaos, stisni gas.'
+    ];
+
+    function persistMapProgress() {
+        localStorage.setItem('efac_map_progress_v1', JSON.stringify(mapProgressByName));
+    }
+
+    function isMapUnlocked(idx) {
+        if (idx <= 0) return true;
+        const prevMapName = maps[idx - 1];
+        return Number(mapProgressByName[prevMapName] || 0) >= 100;
+    }
+
+    function persistMetaState() {
+        localStorage.setItem('efac_meta_wallet_v1', String(Math.max(0, Math.floor(metaWallet))));
+        localStorage.setItem('efac_meta_inventory_v1', JSON.stringify(metaInventory));
+    }
+
+    function renderMapFocus() {
+        const card = document.getElementById('mapFocusCard');
+        const hint = document.getElementById('mapLockHint');
+        if (!card || !hint) return;
+        const name = maps[selectedMapIdx];
+        const pct = Math.max(0, Math.min(100, Number(mapProgressByName[name] || 0)));
+        const unlocked = isMapUnlocked(selectedMapIdx);
+        card.className = `map-card map-focus-card ${unlocked ? 'active' : ''}`;
+        card.innerHTML = `<div class="map-title-row"><h4 class="map-title">${name}</h4><span style="font-size:11px; color:${unlocked ? '#f1c40f' : '#9aa7b2'};">${pct.toFixed(0)}%</span></div><p class="map-shape">Oblik: ${mapShapes[selectedMapIdx] || 'Arena'}</p><div class="map-progress-track"><div class="map-progress-fill" style="width:${pct}%;"></div></div><div class="map-progress-label">${unlocked ? 'Spremna za igru' : 'Zaključana do 100% prethodne karte'}</div>`;
+        hint.innerText = `${selectedMapIdx + 1}/${maps.length} • ${unlocked ? 'Otključano' : 'Zaključano'}`;
+    }
+
+    function shiftMap(dir) {
+        const step = dir >= 0 ? 1 : -1;
+        let idx = selectedMapIdx + step;
+        if (idx < 0) idx = maps.length - 1;
+        if (idx >= maps.length) idx = 0;
+        selectedMapIdx = idx;
+        renderMapFocus();
+        triggerSfx('tap');
+    }
+
+    function openHubWindow(screenId) {
+        const screens = document.querySelectorAll('#uiLayer .menu-screen');
+        screens.forEach((el) => { el.style.display = 'none'; });
+        const target = document.getElementById(screenId);
+        if (target) {
+            document.getElementById('uiLayer').style.display = 'flex';
+            target.style.display = 'block';
+        }
+        if (screenId === 'topMenu') renderTopMenu();
+        if (screenId === 'dailyMenu') renderDailyMenu();
+        if (screenId === 'metaShopMenu') renderMetaShopMenu();
+        if (screenId === 'modeMenu') renderModeMenu();
+        if (screenId === 'startMenu') renderMapFocus();
+        triggerSfx('tap');
+    }
+
+    function renderMetaShopMenu() {
+        const walletEl = document.getElementById('metaWallet');
+        if (walletEl) walletEl.innerText = `Novčanika: ${Math.floor(metaWallet)} tokena`;
+        const inv = document.getElementById('metaInventoryInfo');
+        if (inv) inv.innerText = `Inventar: Shield ${metaInventory.shield} • Speed ${metaInventory.speed} • Alibi ${metaInventory.alibi} • Cash ${metaInventory.cash}`;
+    }
+
+    function buyMetaItem(kind) {
+        const cost = metaPrices[kind] || 0;
+        if (metaWallet < cost) {
+            showMsg('Nema dovoljno tokena', '#e74c3c');
+            return;
+        }
+        metaWallet -= cost;
+        metaInventory[kind] = (metaInventory[kind] || 0) + 1;
+        persistMetaState();
+        renderMetaShopMenu();
+        showMsg('Kupljeno', '#2ecc71');
+        triggerSfx('powerup');
+    }
+
+    function renderTopMenu() {
+        renderHighScores();
+        const main = document.getElementById('mainHsList');
+        const source = document.getElementById('hsList');
+        if (main && source) main.innerHTML = source.innerHTML || '<p style="color:#aaa;">Nema rekorda.</p>';
+    }
+
+    function renderDailyMenu() {
+        const dayKey = new Date().toISOString().slice(0, 10);
+        const claimKey = `efac_daily_claim_${dayKey}`;
+        const alreadyClaimed = localStorage.getItem(claimKey) === '1';
+        const reward = 90 + (new Date().getDate() % 5) * 20;
+        const card = document.getElementById('dailyInfoCard');
+        const btn = document.getElementById('dailyClaimBtn');
+        if (card) card.innerHTML = `<strong>Dnevna smjena</strong><br>Reward danas: <span style="color:#f1c40f; font-weight:800;">${reward} tokena</span><br>Status: ${alreadyClaimed ? 'Već preuzeto' : 'Spremno za claim'}<br><br>Daily bonus resetira se svaki dan.`;
+        if (btn) {
+            btn.disabled = alreadyClaimed;
+            btn.innerText = alreadyClaimed ? 'Reward već preuzet' : 'Preuzmi reward';
+            btn.dataset.reward = String(reward);
+            btn.dataset.claimKey = claimKey;
+        }
+    }
+
+    function claimDailyReward() {
+        const btn = document.getElementById('dailyClaimBtn');
+        if (!btn || btn.disabled) return;
+        const reward = Number(btn.dataset.reward || 0);
+        const claimKey = btn.dataset.claimKey;
+        if (!claimKey) return;
+        metaWallet += reward;
+        localStorage.setItem(claimKey, '1');
+        persistMetaState();
+        renderDailyMenu();
+        showMsg(`Daily +${reward}`, '#f1c40f');
+        triggerSfx('powerup');
+    }
+
+    function renderModeMenu() {
+        const hint = document.getElementById('modeHint');
+        if (hint) hint.innerText = `Aktivni mode: ${gameModes[selectedGameMode]?.label || 'Normal'}`;
+        ['Casual', 'Normal', 'Hard'].forEach((name) => {
+            const id = `modeBtn${name}`;
+            const btn = document.getElementById(id);
+            if (!btn) return;
+            const key = name.toLowerCase();
+            btn.classList.toggle('active', selectedGameMode === key);
+        });
+    }
+
+    function setGameMode(mode) {
+        if (!gameModes[mode]) return;
+        selectedGameMode = mode;
+        localStorage.setItem('efac_game_mode_v1', selectedGameMode);
+        renderModeMenu();
+        showMsg(`MODE: ${gameModes[mode].label.toUpperCase()}`, '#2ecc71');
+        triggerSfx('tap');
+    }
+
+    function getCharLabel(type) {
+        const labels = { zrina: 'ZRINA', maminjo: 'MAMINJO', zdero: 'ZDERO', franc: 'FRANC', npc1: 'FORUM MAJSTOR', npc2: 'KRALJICA REKLAMACIJA', npc3: 'IZGUBLJENI DJEDICA', npc_rodjak: 'RODJAK', stranka: 'STRANKA', boss: 'C.W. BOSS' };
+        return labels[type] || type.toUpperCase();
+    }
+
+    function pushKillFeed(text) {
+        const wrap = document.getElementById('killFeed');
+        if (!wrap) return;
+        const item = document.createElement('div');
+        item.className = 'kill-item';
+        item.textContent = text;
+        wrap.prepend(item);
+        while (wrap.children.length > 4) wrap.removeChild(wrap.lastChild);
+        setTimeout(() => { if (item.parentElement) item.remove(); }, 2800);
+    }
+
+    function applyQualityPreset() {
+        const preset = qualityPreset === 'auto' ? 'balanced' : qualityPreset;
+        if (preset === 'performance') {
+            lowFxMode = true;
+            frameStepMs = 1000 / 50;
+            maxCatchupSteps = 2;
+            miniMapEnabled = true;
+            aiBaseAggro = 0.52;
+        } else if (preset === 'ultra') {
+            lowFxMode = false;
+            frameStepMs = 1000 / 60;
+            maxCatchupSteps = 4;
+            miniMapEnabled = true;
+            aiBaseAggro = 0.62;
+        } else {
+            lowFxMode = IS_MOBILE;
+            frameStepMs = 1000 / 60;
+            maxCatchupSteps = 3;
+            miniMapEnabled = true;
+            aiBaseAggro = 0.58;
+        }
+        resolveRenderMode();
+    }
+
+    function resolveRenderMode() {
+        // Keep render mode stable in production build.
+        renderMode = 'flat';
+        textureTestEnabled = false;
+    }
+
+    function setupDailyChallenge() {
+        const daySeed = new Date().toISOString().slice(0, 10);
+        let hash = 0;
+        for (let i = 0; i < daySeed.length; i++) hash = ((hash << 5) - hash + daySeed.charCodeAt(i)) | 0;
+        const idx = Math.abs(hash) % dailyChallenges.length;
+        currentDailyChallenge = dailyChallenges[idx];
+    }
+
+    function updateBossBar() {
+        const wrap = document.getElementById('bossBarWrap');
+        const fill = document.getElementById('bossBarFill');
+        const txt = document.getElementById('bossBarText');
+        if (!wrap || !fill || !txt) return;
+
+        if (!bossActive) {
+            wrap.style.display = 'none';
+            return;
+        }
+        wrap.style.display = 'block';
+        fill.style.width = `${Math.max(0, Math.min(100, bossBarValue * 100))}%`;
+        txt.innerText = `C.W. FAZA ${bossPhase} • ${Math.ceil(bossBarValue * 100)}%`;
+    }
+
+    function scheduleBossRadar(delayMs) {
+        if (bossRadarTimeoutId) clearTimeout(bossRadarTimeoutId);
+        const safeDelay = Math.max(100, Number(delayMs) || getBossIntervalMs());
+        bossRadarDueAtMs = performance.now() + safeDelay;
+        bossRadarTimeoutId = setTimeout(triggerBossRadar, safeDelay);
+    }
+
+    function endBossEncounter() {
+        if (!bossActive) return;
+        bossActive = false;
+        bossActiveTimeoutId = null;
+        bossActiveUntilMs = 0;
+        const player = entities.find(e => e.isPlayer && !e.dead);
+        if (player && !bossPenaltyTriggeredThisEncounter && player.stats) {
+            player.stats.bossSurvived = (player.stats.bossSurvived || 0) + 1;
+        }
+    }
+
+    function getPrestigeNpcSpeedMul() {
+        if (prestigeLevel >= 2) return 1.24;
+        if (prestigeLevel >= 1) return 1.15;
+        return 1.0;
+    }
+
+    function getBossIntervalMs() {
+        if (prestigeLevel >= 2) return 45000;
+        if (prestigeLevel >= 1) return 45000;
+        return BOSS_INTERVAL_MS;
+    }
+
+    function refreshHudLevelLabel() {
+        const levelEl = document.getElementById('hudLevelName');
+        if (!levelEl) return;
+        const mapLabel = maps[Math.min(currentLevelIdx, maps.length - 1)] || 'SALON';
+        levelEl.innerText = `${mapLabel} | P${prestigeLevel}`;
+    }
+
+    function applyNightmareVisualMode() {
+        nightmareRadarHidden = prestigeLevel >= 2;
+        const badge = document.getElementById('nightmareBadge');
+        if (badge) badge.style.display = nightmareRadarHidden ? 'inline-block' : 'none';
+        if (nightmareGlitchTimer) {
+            clearInterval(nightmareGlitchTimer);
+            nightmareGlitchTimer = null;
+        }
+        if (nightmareGlitchPulseTimeout) {
+            clearTimeout(nightmareGlitchPulseTimeout);
+            nightmareGlitchPulseTimeout = null;
+        }
+        canvas.classList.remove('nightmare-glitch');
+
+        if (prestigeLevel < 2) return;
+
+        nightmareGlitchTimer = setInterval(() => {
+            if (gameState !== 'PLAYING') return;
+            canvas.classList.add('nightmare-glitch');
+            triggerSfx('kill');
+            if (nightmareGlitchPulseTimeout) clearTimeout(nightmareGlitchPulseTimeout);
+            nightmareGlitchPulseTimeout = setTimeout(() => {
+                canvas.classList.remove('nightmare-glitch');
+            }, 1000);
+        }, 20000);
+    }
+
+    function setQualityPreset(nextPreset) {
+        qualityPreset = nextPreset || 'auto';
+        applyQualityPreset();
+        showMsg(`QUALITY: ${qualityPreset.toUpperCase()}`, '#f1c40f');
+    }
+
+    function refreshMenuPortraits() {
+        const isRealFor = (charKey) => skinLockByChar[charKey] === 'real';
+        const srcZrina = isRealFor('zrina') ? 'zrina – kopija.png' : 'zrina.png';
+        const srcMaminjo = isRealFor('maminjo') ? 'maminjo – kopija.png' : 'maminjo.png';
+        const srcZdero = isRealFor('zdero') ? 'zdero – kopija.png' : 'zdero.png';
+        const srcFranc = isRealFor('franc') ? 'franc – kopija.png' : 'franc.png';
+        document.getElementById('imgCardZrina').src = srcZrina;
+        document.getElementById('imgCardMaminjo').src = srcMaminjo;
+        document.getElementById('imgCardZdero').src = srcZdero;
+        document.getElementById('imgCardFranc').src = srcFranc;
+
+        const setBtn = (id, isActive) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.toggle('active', isActive);
+        };
+        setBtn('skinBtnZrinaRender', skinLockByChar.zrina === 'render');
+        setBtn('skinBtnZrinaReal', skinLockByChar.zrina === 'real');
+        setBtn('skinBtnMaminjoRender', skinLockByChar.maminjo === 'render');
+        setBtn('skinBtnMaminjoReal', skinLockByChar.maminjo === 'real');
+        setBtn('skinBtnZderoRender', skinLockByChar.zdero === 'render');
+        setBtn('skinBtnZderoReal', skinLockByChar.zdero === 'real');
+        setBtn('skinBtnFrancRender', skinLockByChar.franc === 'render');
+        setBtn('skinBtnFrancReal', skinLockByChar.franc === 'real');
+    }
+
+    function setSkinLock(charKey, mode) {
+        if (!skinLockByChar[charKey]) return;
+        skinLockByChar[charKey] = mode === 'render' ? 'render' : 'real';
+        localStorage.setItem('efac_skin_lock_v1', JSON.stringify(skinLockByChar));
+        refreshMenuPortraits();
+        showMsg(`${charKey.toUpperCase()}: ${skinLockByChar[charKey].toUpperCase()}`, '#00adef');
+    }
+
+    function setCardSkin(charKey, mode, ev) {
+        if (ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+        }
+        setSkinLock(charKey, mode);
+    }
+
+    function setSkinMode(mode) {
+        skinMode = 'mixed';
+        refreshMenuPortraits();
+    }
+
+    function resolvePlayerSkinKey(type) {
+        const config = PLAYER_SKIN_MAP[type];
+        if (!config) return type;
+        const lock = skinLockByChar[type] || 'render';
+        return lock === 'real' ? config.real : config.render;
+    }
+
+    function updateObjectiveHud() {
+        const el = document.getElementById('hudObjective');
+        if (!el || !currentObjective) return;
+        let current = objectiveProgress;
+        if (currentObjective.type === 'survive') {
+            current = Math.floor((performance.now() - levelStartTimeMs) / 1000);
+        }
+        const doneMark = objectiveCompleted ? ' [ZAVRSENO]' : '';
+        el.innerText = `Cilj: ${currentObjective.text} (${Math.min(current, currentObjective.target)}/${currentObjective.target})${doneMark}`;
+    }
+
+    function completeObjective() {
+        if (objectiveCompleted || !currentObjective) return;
+        objectiveCompleted = true;
+        addMoney(currentObjective.reward);
+        showMsg(`BONUS CILJ +${currentObjective.reward} EUR`, '#f1c40f');
+        pushKillFeed(`BONUS CILJ GOTOV (+${currentObjective.reward} EUR)`);
+        updateObjectiveHud();
+    }
+
+    function advanceObjective(kind, amount = 1) {
+        if (!currentObjective || objectiveCompleted) return;
+        if (currentObjective.type !== kind) return;
+        objectiveProgress += amount;
+        if (objectiveProgress >= currentObjective.target) completeObjective();
+        else updateObjectiveHud();
+    }
+
+    function selectObjectiveForLevel() {
+        const pick = objectiveTemplates[currentLevelIdx % objectiveTemplates.length];
+        currentObjective = { ...pick };
+        objectiveProgress = 0;
+        objectiveCompleted = false;
+        levelStartTimeMs = performance.now();
+        updateObjectiveHud();
+    }
+
+    function getPattern(imageObj, fallbackColor = '#111') {
+        if (imageObj && imageObj.complete && imageObj.naturalWidth !== 0) {
+            const pattern = ctx.createPattern(imageObj, 'repeat');
+            if (pattern) return pattern;
+        }
+        return fallbackColor;
+    }
+
+    function buildFloorBlendForLevel(levelIdx) {
+        const recipes = [
+            { base: 'floor', mid: 'floor_alt', top: 'glass', light: 'rgba(241, 196, 15, 0.08)' },
+            { base: 'floor_alt', mid: 'wall', top: 'glass', light: 'rgba(0, 173, 239, 0.10)' },
+            { base: 'wall', mid: 'floor', top: 'glass', light: 'rgba(255, 255, 255, 0.07)' },
+            { base: 'floor', mid: 'wall_alt', top: 'glass', light: 'rgba(46, 204, 113, 0.08)' },
+            { base: 'floor_alt', mid: 'floor', top: 'glass', light: 'rgba(52, 152, 219, 0.08)' },
+            { base: 'wall_alt', mid: 'floor_alt', top: 'glass', light: 'rgba(231, 76, 60, 0.08)' }
+        ];
+        return recipes[levelIdx % recipes.length];
+    }
+
+    function drawLayeredBackground() {
+        try {
+            // Absolute fallback base so screen is never fully black even if textures fail.
+            const grd = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grd.addColorStop(0, '#1a2430');
+            grd.addColorStop(1, '#253240');
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Procedural texture fallback for BASE stage (always visible even if image assets fail).
+            ctx.save();
+            ctx.globalAlpha = lowFxMode ? 0.08 : 0.12;
+            ctx.fillStyle = '#6f8aa3';
+            const stripe = 24;
+            for (let y = 0; y < canvas.height + stripe; y += stripe) {
+                ctx.fillRect(0, y, canvas.width, 1);
+            }
+            ctx.restore();
+
+            const blend = currentFloorBlend || buildFloorBlendForLevel(currentLevelIdx);
+            const baseImg = imgs[blend.base];
+            if (baseImg && baseImg.complete && baseImg.naturalWidth !== 0) {
+                const basePattern = ctx.createPattern(baseImg, 'repeat');
+                if (basePattern) {
+                    ctx.save();
+                    ctx.globalAlpha = lowFxMode ? 0.32 : 0.48;
+                    ctx.fillStyle = basePattern;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.restore();
+                }
+            }
+
+            if (textureStagePreset === 'mid' || textureStagePreset === 'full') {
+                const midImg = imgs[blend.mid];
+                if (midImg && midImg.complete && midImg.naturalWidth !== 0) {
+                    const midPattern = ctx.createPattern(midImg, 'repeat');
+                    if (midPattern) {
+                        ctx.save();
+                        ctx.globalAlpha = lowFxMode ? 0.14 : 0.24;
+                        ctx.fillStyle = midPattern;
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.restore();
+                    }
+                }
+            }
+
+            if (textureStagePreset === 'full') {
+                const topImg = imgs[blend.top];
+                if (topImg && topImg.complete && topImg.naturalWidth !== 0) {
+                    const topPattern = ctx.createPattern(topImg, 'repeat');
+                    if (topPattern) {
+                        ctx.save();
+                        ctx.globalAlpha = lowFxMode ? 0.08 : 0.14;
+                        ctx.fillStyle = topPattern;
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.restore();
+                    }
+                }
+
+                ctx.save();
+                ctx.globalCompositeOperation = 'screen';
+                ctx.fillStyle = blend.light;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
+            }
+        } catch (err) {
+            renderMode = 'flat';
+            if (!renderFallbackNotified) {
+                renderFallbackNotified = true;
+                showMsg('TEXTURE FAILSAFE: FLAT', '#e67e22');
+            }
+        }
+    }
+
+    function drawTextureOverlaySafe(anchorX = 0, anchorY = 0, zoom = 1) {
+        try {
+            const blend = currentFloorBlend || buildFloorBlendForLevel(currentLevelIdx);
+
+            const drawTiledLayer = (img, alpha, baseTilePx, offsetMulX, offsetMulY) => {
+                if (!img || !img.complete || img.naturalWidth === 0 || img.naturalHeight === 0) return;
+
+                const aspect = img.naturalWidth / img.naturalHeight;
+                const tileH = Math.max(100, Math.min(240, baseTilePx));
+                const tileW = Math.max(100, Math.min(320, tileH * aspect));
+
+                const safeZoom = Number.isFinite(zoom) && zoom > 0 ? zoom : 1;
+                const worldOffsetX = ((anchorX / safeZoom) * offsetMulX) % tileW;
+                const worldOffsetY = ((anchorY / safeZoom) * offsetMulY) % tileH;
+                const startX = -tileW - worldOffsetX;
+                const startY = -tileH - worldOffsetY;
+
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                for (let y = startY; y < canvas.height + tileH; y += tileH) {
+                    for (let x = startX; x < canvas.width + tileW; x += tileW) {
+                        ctx.drawImage(img, x, y, tileW, tileH);
+                    }
+                }
+                ctx.restore();
+            };
+
+            drawTiledLayer(imgs[blend.base], lowFxMode ? 0.12 : 0.18, 180, 0.6, 0.35);
+
+            if (textureStagePreset === 'mid' || textureStagePreset === 'full') {
+                drawTiledLayer(imgs[blend.mid], lowFxMode ? 0.08 : 0.12, 200, -0.35, 0.5);
+            }
+
+            if (textureStagePreset === 'full') {
+                drawTiledLayer(imgs[blend.top], lowFxMode ? 0.05 : 0.08, 220, 0.25, -0.2);
+            }
+        } catch (err) {
+            textureTestEnabled = false;
+            if (!renderFallbackNotified) {
+                renderFallbackNotified = true;
+                showMsg('TEXTURE OVERLAY FAILSAFE: OFF', '#e67e22');
+            }
+        }
+    }
+
+    function getEntityImage(ent) {
+        if (ent.id === 999) return imgs.car_boss;
+        if (ent.isPlayer && PLAYER_SKIN_MAP[ent.type]) {
+            const skinKey = resolvePlayerSkinKey(ent.type);
+            return imgs[skinKey] || imgs[ent.type];
+        }
+        if (!ent.isPlayer) {
+            if (ent.type === 'npc1') return imgs.car_citan;
+            if (ent.type === 'npc2') return imgs.car_smart;
+            if (ent.type === 'npc3') return imgs.car_x;
+        }
+        return imgs[ent.type];
+    }
+
+    function drawMiniMap(player) {
+        if (!miniMapEnabled || !miniMapCtx || !player) return;
+        miniMapFrameCounter++;
+        if (IS_MOBILE && miniMapFrameCounter % 2 !== 0) return;
+
+        miniMapCtx.fillStyle = '#0b0b0b';
+        miniMapCtx.fillRect(0, 0, miniMapCanvas.width, miniMapCanvas.height);
+
+        const sx = miniMapCanvas.width / COLS;
+        const sy = miniMapCanvas.height / ROWS;
+        const scanStep = lowFxMode ? 5 : 3;
+        for (let y = 0; y < ROWS; y += scanStep) {
+            for (let x = 0; x < COLS; x += scanStep) {
+                const v = grid[y][x];
+                if (v === 1) {
+                    miniMapCtx.fillStyle = 'rgba(0, 173, 239, 0.9)';
+                    miniMapCtx.fillRect(x * sx, y * sy, Math.max(1, sx * scanStep), Math.max(1, sy * scanStep));
+                } else if (v === -1) {
+                    miniMapCtx.fillStyle = '#8B4513';
+                    miniMapCtx.fillRect(x * sx, y * sy, Math.max(1, sx * scanStep), Math.max(1, sy * scanStep));
+                } else if (v === -2) {
+                    miniMapCtx.fillStyle = '#202830';
+                    miniMapCtx.fillRect(x * sx, y * sy, Math.max(1, sx * scanStep), Math.max(1, sy * scanStep));
+                }
+            }
+        }
+
+        entities.forEach(ent => {
+            if (ent.dead || ent.id === 999) return;
+            miniMapCtx.fillStyle = ent.isPlayer ? '#ffffff' : '#ff6b6b';
+            miniMapCtx.beginPath();
+            miniMapCtx.arc((ent.x / MAP_W) * miniMapCanvas.width, (ent.y / MAP_H) * miniMapCanvas.height, ent.isPlayer ? 3 : 2, 0, Math.PI * 2);
+            miniMapCtx.fill();
+        });
+    }
+
+    setupDailyChallenge();
+    applyQualityPreset();
+    refreshMenuPortraits();
+    renderMapFocus();
+    updateAudioUi();
+    renderMetaShopMenu();
+    renderModeMenu();
+
+    window.addEventListener('popstate', () => {
+        if (gameState === 'PLAYING' || gameState === 'BONUS') {
+            setPauseState(true, 'back');
+            try { history.pushState({ efacPauseGuard: true }, ''); } catch (_) {}
+        }
+    });
+
+    window.addEventListener('mousemove', e => { isUsingTouch = false; mouseX = e.clientX; mouseY = e.clientY; });
+    window.addEventListener('touchstart', e => {
+        if(gameState === 'PLAYING' || gameState === 'BONUS') {
+            if (e.target && e.target.closest && (e.target.closest('#pauseMusicHud') || e.target.closest('#menuMusicHud'))) return;
+            if(e.target.id === 'alibiBtn') return; 
+            isUsingTouch = true; isTouching = true;
+            touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
+            touchX = touchStartX; touchY = touchStartY;
+        }
+    }, {passive: false});
+    window.addEventListener('touchmove', e => {
+        if (e.target && e.target.closest && (e.target.closest('#pauseMusicHud') || e.target.closest('#menuMusicHud'))) return;
+        if (e.cancelable) e.preventDefault();
+        if(!isTouching) return;
+        touchX = e.touches[0].clientX; touchY = e.touches[0].clientY;
+        let dx = touchX - touchStartX; let dy = touchY - touchStartY;
+        if(Math.hypot(dx, dy) > 5) touchAngle = Math.atan2(dy, dx);
+    }, {passive: false});
+    window.addEventListener('touchend', e => { isTouching = false; });
+
+    const quotes = {
+        franc: ["Top, vrh i nikad bolje!", "Doktor čeka? Franc leti.", "Jaska express, bez kočenja.", "Top, vrh, generale!", "Dinamo Zagreb!"],
+        zdero: ["Nemjerljivi učinak.", "Polako, ali neumoljivo.", "Probava je taktička.", "Ovo je urota!", "Pohaban taban!"],
+        maminjo: ["Gasim emocije.", "Nevidljiv dok ne bude kasno.", "Tlak 120/80, protivnik 220/160.", "Zadržavam dah...", "150 metara s perajama!"],
+        zrina: ["Dev-Hack aktivan.", "Statistika ne laže, ljudi da.", "EFAC Praona knows all.", "Deploy u produkciju!", "Sync na bazu završen!"],
+        npc1: ["To na forumu piše drugačije!", "Imam screenshot!"],
+        npc2: ["Tražim voditelja odmah!", "Došla sam bez termina i što sad?!"],
+        npc3: ["Meni je 1985. bolje radio...", "Samo da vam pokažem kartu."],
+        stranka: ["Ovo je enterprise kaos!", "Zovem upravu.", "Imam hitan slučaj bez najave!"],
+        killer: ["Nalog je zatvoren prije tebe.", "Stranka je preuzela teren.", "Smjena te prestigla ovaj put."]
+    };
+
+    function getQuote(type) {
+        const list = quotes[type] || quotes.stranka;
+        return list[Math.floor(Math.random() * list.length)];
+    }
+
+    let trashBubbleInterval = null;
+    function showTrashBubble(x, y, text, charClass = '') {
+        const bubble = document.getElementById('trashBubble');
+        bubble.innerText = text; bubble.style.left = `${x}px`; bubble.style.top = `${y}px`;
+        bubble.style.display = 'block';
+
+        if (trashBubbleInterval) clearInterval(trashBubbleInterval);
+        
+        let opacity = 1; let offset = 0;
+        trashBubbleInterval = setInterval(() => {
+            opacity -= 0.05; offset += 1;
+            bubble.style.opacity = opacity; bubble.style.top = `${y - offset}px`;
+            if(opacity <= 0) { clearInterval(trashBubbleInterval); bubble.style.display = 'none'; bubble.style.opacity=1; }
+        }, 30);
+    }
+
+    let highscores = JSON.parse(localStorage.getItem('efac_enterprise_hs_v2')) || [];
+    function checkHighScore() {
+        if(highscores.length < 5 || totalEurosThisRun > (highscores[highscores.length-1]?.score || 0)) {
+            document.getElementById('newHighScoreEntry').style.display = 'block';
+        } else { renderHighScores(); }
+    }
+    function saveHighScore() {
+        let init = document.getElementById('hsInitials').value.toUpperCase() || 'AAA';
+        highscores.push({name: init, score: totalEurosThisRun, level: maps[Math.min(currentLevelIdx, maps.length-1)]});
+        highscores.sort((a,b) => b.score - a.score); highscores = highscores.slice(0, 5);
+        localStorage.setItem('efac_enterprise_hs_v2', JSON.stringify(highscores));
+        document.getElementById('newHighScoreEntry').style.display = 'none'; renderHighScores();
+    }
+    function renderHighScores() {
+        let html = '';
+        highscores.forEach((hs, i) => { html += `<div class="hs-entry"><span>${i+1}. ${hs.name} (${hs.level})</span><span>${Math.floor(hs.score)} €</span></div>`; });
+        if(html==='') html = '<p style="color:#aaa;">Nema rekorda.</p>';
+        document.getElementById('hsList').innerHTML = html;
+    }
+
+    function showMsg(text, color) {
+        const msg = document.getElementById('powerupMsg');
+        msg.innerText = text; msg.style.color = color; msg.style.textShadow = `0 0 15px ${color}`;
+        msg.style.display = 'block'; msg.style.animation = 'none'; void msg.offsetWidth; msg.style.animation = 'pop 0.3s ease-out';
+        setTimeout(() => msg.style.display = 'none', 2000);
+    }
+
+    function screenShake(trajanjeMs = 220, intenzitet = 6) {
+        const start = performance.now();
+        function tick(now) {
+            const elapsed = now - start;
+            if (elapsed >= trajanjeMs) {
+                canvas.style.transform = '';
+                return;
+            }
+            const dx = (Math.random() * 2 - 1) * intenzitet;
+            const dy = (Math.random() * 2 - 1) * intenzitet;
+            canvas.style.transform = `translate(${dx}px, ${dy}px)`;
+            requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    }
+
+    function triggerKillFlash(durationMs = 50) {
+        const flash = document.getElementById('hitFlash');
+        if (!flash) return;
+        flash.style.transition = 'none';
+        flash.style.opacity = '0.8';
+        setTimeout(() => {
+            flash.style.transition = 'opacity 80ms ease-out';
+            flash.style.opacity = '0';
+        }, durationMs);
+    }
+
+    const charData = {
+        zrina: { color: '#00adef', baseSpd: 4.1, moneyMult: 1.18, collectBonus: 12, hackReveal: true },
+        maminjo: { color: '#9b59b6', baseSpd: 4.0, stealthRange: 260, evadeBonus: 0.92 },
+        zdero: { color: '#e67e22', baseSpd: 3.8, extraLives: 2, shieldBonus: 120 },
+        franc: { color: '#2ecc71', baseSpd: 4.8, speedBonus: 0.2, sprintBoost: 1.08 },
+        npc1: { color: '#e74c3c', baseSpd: 3.55 }, npc2: { color: '#e74c3c', baseSpd: 3.55 },
+        npc3: { color: '#e74c3c', baseSpd: 3.45 }, npc_rodjak: { color: '#e74c3c', baseSpd: 3.65 },
+        boss: { color: '#c0392b', baseSpd: 4.1 }, stranka: { color: '#e74c3c', baseSpd: 3.55 }
+    };
+
+    function getSafeSpawn(minEntityDistance = 260, preferOuterRing = false) {
+        for(let i=0; i<100; i++) {
+            let px = Math.random() * (MAP_W - 500) + 250; let py = Math.random() * (MAP_H - 500) + 250;
+            if (preferOuterRing) {
+                const nx = (px / MAP_W) - 0.5;
+                const ny = (py / MAP_H) - 0.5;
+                if (Math.hypot(nx, ny) < 0.23) continue;
+            }
+            let cx = Math.floor(px/TILE); let cy = Math.floor(py/TILE);
+            let safe = true;
+            for(let y=cy-2; y<=cy+2; y++) for(let x=cx-2; x<=cx+2; x++) if(y>=0&&y<ROWS&&x>=0&&x<COLS && grid[y][x] !== 0) safe = false;
+            if (safe && entities.length > 0) {
+                for (const ent of entities) {
+                    if (ent.dead) continue;
+                    if (Math.hypot(ent.x - px, ent.y - py) < minEntityDistance) {
+                        safe = false;
+                        break;
+                    }
+                }
+            }
+            if(safe) return {x: px, y: py};
+        }
+        for (let y = 3; y < ROWS - 3; y += 2) {
+            for (let x = 3; x < COLS - 3; x += 2) {
+                if (grid[y][x] === 0) return { x: x * TILE + TILE / 2, y: y * TILE + TILE / 2 };
+            }
+        }
+        return {x: MAP_W / 2, y: MAP_H / 2}; 
+    }
+
+    function getBossSafeSpawn(anchorX = MAP_W / 2, anchorY = MAP_H / 2) {
+        const clamp = (v, mn, mx) => Math.max(mn, Math.min(mx, v));
+        const acx = clamp(Math.floor(anchorX / TILE), 1, COLS - 2);
+        const acy = clamp(Math.floor(anchorY / TILE), 1, ROWS - 2);
+
+        for (let r = 0; r < Math.max(COLS, ROWS); r++) {
+            for (let dy = -r; dy <= r; dy++) {
+                for (let dx = -r; dx <= r; dx++) {
+                    if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
+                    const cx = acx + dx;
+                    const cy = acy + dy;
+                    if (cx < 1 || cx >= COLS - 1 || cy < 1 || cy >= ROWS - 1) continue;
+                    const cell = grid[cy][cx];
+                    if (cell === -1 || cell === -2) continue;
+                    return { x: cx * TILE + TILE / 2, y: cy * TILE + TILE / 2 };
+                }
+            }
+        }
+        return getSafeSpawn(320, false);
+    }
+
+    function createEntity(id, type, isPlayer) {
+        let spd = charData[type] ? charData[type].baseSpd : 4.0;
+        if(isPlayer) {
+            spd += upgrades.speed.value;
+            spd += charData[type]?.speedBonus || 0;
+        } else if (id !== 999) {
+            spd *= getPrestigeNpcSpeedMul();
+        }
+
+        let pos = isPlayer ? getSafeSpawn(420, true) : getSafeSpawn(280, false);
+        let startShieldVal = isPlayer ? upgrades.shield.value : 0;
+        let col = charData[type] ? charData[type].color : '#e74c3c';
+
+        let ent = {
+            id: id, trailId: id + 100, isPlayer: isPlayer, type: type,
+            x: pos.x, y: pos.y, angle: Math.random() * Math.PI*2, targetAngle: 0,
+            speed: spd, baseSpeed: spd, color: col,
+            trailList: [], lastCx: -1, lastCy: -1, dead: false, timer: 0, shield: startShieldVal, powerTimer: 0, zoomTimer: 0,
+            startX: pos.x, startY: pos.y, tilesConquered: 0, kills: 0, lives: 0, inSafeZone: true,
+            stats: { kills: 0, powerups: {}, bossSurvived: 0 },
+            traits: isPlayer ? (charData[type] || {}) : {},
+            aiProfile: isPlayer ? 'player' : ['aggressive', 'balanced', 'cautious', 'stalker'][Math.floor(Math.random() * 4)],
+            isHunting: false
+        };
+        createBase(ent.id, ent.x, ent.y);
+        return ent;
+    }
+
+    function createBase(id, px, py) {
+        let cx = Math.floor(px/TILE); let cy = Math.floor(py/TILE);
+        let filledCount = 0;
+        for(let y = cy-1; y <= cy+1; y++) {
+            for(let x = cx-1; x <= cx+1; x++) { 
+                if(y>=0 && y<ROWS && x>=0 && x<COLS && grid[y][x]===0) {
+                    grid[y][x] = id;
+                    filledCount++;
+                }
+            }
+        }
+        if (gameState === 'PLAYING' && filledCount === 0) {
+            console.warn(`createBase(id=${id}, cx=${cx}, cy=${cy}) - nije popunjeno!`);
+        }
+    }
+
+    function generateObstacles() {
+        obstacles = [];
+        const objTypes = ['barrel', 'barrel_alt', 'crate', 'fotelja', 'kauc', 'stol', 'visoki_stol', 'plant', 'pot'];
+        const mapCenterX = Math.floor(COLS / 2);
+        const mapCenterY = Math.floor(ROWS / 2);
+        const safeRadius = 12;
+
+        for(let i=0; i < 3 + currentLevelIdx*2; i++) {
+            let type = objTypes[Math.floor(Math.random()*objTypes.length)];
+            let sizeTiles = OBSTACLE_SIZE_BY_TYPE[type] || OBSTACLE_SIZE_TILES;
+
+            let cx = Math.floor(Math.random() * (COLS - sizeTiles - 20)) + 10;
+            let cy = Math.floor(Math.random() * (ROWS - sizeTiles - 20)) + 10;
+
+            // Keep the center spawn area open, similar to Paper.io initial breathing room.
+            let obstacleCenterX = cx + sizeTiles / 2;
+            let obstacleCenterY = cy + sizeTiles / 2;
+            if (Math.hypot(obstacleCenterX - mapCenterX, obstacleCenterY - mapCenterY) < safeRadius) continue;
+
+            let canPlace = true;
+            for (let oy = 0; oy < sizeTiles; oy++) {
+                for (let ox = 0; ox < sizeTiles; ox++) {
+                    if (grid[cy + oy][cx + ox] !== 0) {
+                        canPlace = false;
+                        break;
+                    }
+                }
+                if (!canPlace) break;
+            }
+            if (!canPlace) continue;
+
+            obstacles.push({ cx: cx, cy: cy, type: type, size: sizeTiles });
+            for (let oy = 0; oy < sizeTiles; oy++) {
+                for (let ox = 0; ox < sizeTiles; ox++) {
+                    grid[cy + oy][cx + ox] = -1; // solid obstacle footprint
+                }
+            }
+        }
+    }
+
+    function applyMapShapeMask(levelIdx) {
+        const shape = levelIdx % 5;
+        const cx = COLS / 2;
+        const cy = ROWS / 2;
+        const a = COLS * 0.46;
+        const b = ROWS * 0.44;
+
+        for (let y = 0; y < ROWS; y++) {
+            for (let x = 0; x < COLS; x++) {
+                let playable = true;
+                const dx = x - cx;
+                const dy = y - cy;
+
+                if (shape === 0) {
+                    playable = ((dx * dx) / (a * a) + (dy * dy) / (b * b)) <= 1;
+                } else if (shape === 1) {
+                    playable = x > 6 && x < COLS - 6 && y > 6 && y < ROWS - 6;
+                    if (x > COLS * 0.33 && x < COLS * 0.67 && y < ROWS * 0.52) playable = false;
+                } else if (shape === 2) {
+                    playable = x > 5 && x < COLS - 5 && y > 5 && y < ROWS - 5;
+                    if ((x < COLS * 0.22 || x > COLS * 0.78) && y < ROWS * 0.35) playable = false;
+                } else if (shape === 3) {
+                    playable = x > 4 && x < COLS - 4 && y > 4 && y < ROWS - 4;
+                    if (Math.abs(dx + dy * 0.45) > COLS * 0.47) playable = false;
+                } else {
+                    playable = x > 6 && x < COLS - 6 && y > 6 && y < ROWS - 6;
+                    const pocket = Math.hypot(dx, dy) < COLS * 0.11;
+                    if (pocket) playable = false;
+                }
+
+                if (!playable) grid[y][x] = -2;
+            }
+        }
+    }
+
+    function findNearestTrailTarget(ent, ownerId) {
+        const owner = entities.find(e => e.id === ownerId && !e.dead);
+        if (!owner || owner.trailList.length === 0) return null;
+
+        let best = null;
+        let bestDist = Infinity;
+        for (const cell of owner.trailList) {
+            const tx = cell.x * TILE + TILE / 2;
+            const ty = cell.y * TILE + TILE / 2;
+            const d = Math.hypot(tx - ent.x, ty - ent.y);
+            if (d < bestDist) {
+                bestDist = d;
+                best = { x: tx, y: ty, d: d };
+            }
+        }
+
+        if (best && best.d < 700) return best;
+        return null;
+    }
+
+    let selectedPlayerType = '';
+
+    function enterFullscreen() {
+        const el = document.documentElement;
+        const requestFs =
+            el.requestFullscreen ||
+            el.webkitRequestFullscreen ||
+            el.msRequestFullscreen;
+
+        if (typeof requestFs === 'function') {
+            // Fullscreen can fail on some browsers/contexts; ignore and continue game start.
+            const maybePromise = requestFs.call(el);
+            if (maybePromise && typeof maybePromise.catch === 'function') {
+                maybePromise.catch(() => {});
+            }
+        }
+    }
+
+    function startGame(type) {
+        if (!isMapUnlocked(selectedMapIdx)) {
+            showMsg('Mapa je zaključana', '#e74c3c');
+            return;
+        }
+        enterFullscreen();
+        ensureAudioCtx();
+        playPlaylist();
+        armBackPause();
+        renderFallbackNotified = false;
+        applyQualityPreset();
+
+        if (currentDailyChallenge) {
+            showMsg(`DAILY: ${currentDailyChallenge.name}`, '#f1c40f');
+        }
+
+        selectedPlayerType = type;
+        bankEuros = 0; totalEurosThisRun = 0; runTokensEarned = 0; currentLevelIdx = selectedMapIdx; targetPercentage = 100;
+        mapClearHandled = false;
+        upgrades = { 
+            speed: { level: 1, cost: 50, value: 0 }, income: { level: 1, cost: 50, value: 1 },
+            shield: { level: 1, cost: 100, value: 0 }, duration: { level: 1, cost: 100, value: 1.0 },
+            zoom: { level: 1, cost: 150, value: 1.0 }, life: { level: 1, cost: 200, value: 0.05 }
+        };
+
+        if (metaInventory.shield > 0) { upgrades.shield.value += 120; metaInventory.shield--; }
+        if (metaInventory.speed > 0) { upgrades.speed.value += 0.2; metaInventory.speed--; }
+        if (metaInventory.cash > 0) { bankEuros += 100; totalEurosThisRun += 100; metaInventory.cash--; }
+        persistMetaState();
+
+        alibiAvailable = 1; alibiCooldownTimer = 0; updateAlibiHUD();
+        if (metaInventory.alibi > 0) {
+            alibiAvailable += 1;
+            metaInventory.alibi--;
+            persistMetaState();
+            updateAlibiHUD();
+        }
+        document.getElementById('hudTip').innerText = LEVEL_TIPS[0];
+        triggerSfx('tap');
+        startLevel();
+    }
+
+    function startLevel() {
+        document.getElementById('uiLayer').style.display = 'none';
+        document.getElementById('hud').style.display = 'flex';
+        document.getElementById('miniMapWrap').style.display = miniMapEnabled ? 'block' : 'none';
+        document.getElementById('killFeed').innerHTML = '';
+        if (bossRadarTimeoutId) {
+            clearTimeout(bossRadarTimeoutId);
+            bossRadarTimeoutId = null;
+        }
+        if (bossActiveTimeoutId) {
+            clearTimeout(bossActiveTimeoutId);
+            bossActiveTimeoutId = null;
+        }
+        pausedBossRadarRemainingMs = 0;
+        pausedBossActiveRemainingMs = 0;
+        bossPenaltyTriggeredThisEncounter = false;
+        refreshHudLevelLabel();
+        applyNightmareVisualMode();
+        const eventCfg = levelEvents[Math.min(currentLevelIdx, levelEvents.length - 1)];
+        currentFloorBlend = buildFloorBlendForLevel(currentLevelIdx);
+        if (eventCfg) {
+            const challengeSuffix = currentDailyChallenge ? ` | Daily: ${currentDailyChallenge.name}` : '';
+            document.getElementById('hudTip').innerText = `${eventCfg.name}: ${eventCfg.flavor}${challengeSuffix}`;
+            showMsg(eventCfg.name.toUpperCase(), '#f1c40f');
+        }
+        selectObjectiveForLevel();
+        
+        for(let y=0; y<ROWS; y++) grid[y].fill(0);
+        applyMapShapeMask(currentLevelIdx);
+        entities = []; poops = []; powerups = []; coins = []; bossPenaltyTimer = 0; bossActive = false; bossEntity = null;
+        markTerritoryDirty();
+        const modeCfg = gameModes[selectedGameMode] || gameModes.normal;
+        modeAggroOffset = modeCfg.aggroOffset;
+        playerSpawnGraceMs = 9000 * modeCfg.graceMul;
+        levelSlowUntilMs = performance.now() + 28000;
+        
+        targetCameraZoom = upgrades.zoom.value;
+        cameraZoom = targetCameraZoom;
+        
+        let player = createEntity(1, selectedPlayerType, true);
+        document.getElementById('score').innerText = Math.floor(bankEuros);
+        if(player.traits.extraLives) {
+            player.lives = player.traits.extraLives;
+            document.getElementById('extraLifeIcon').style.display = 'inline';
+        } else {
+            document.getElementById('extraLifeIcon').style.display = 'none';
+        }
+        if(player.traits.shieldBonus) player.shield += player.traits.shieldBonus;
+        if (currentDailyChallenge?.id === 'no_shield') player.shield = 0;
+        entities.push(player);
+
+        // Prikaži ukupni napredak u HUD-u (ali NE pre-sij polje – runda počinje svježa)
+        const _seedMapName = maps[Math.min(currentLevelIdx, maps.length - 1)];
+        const _savedTotal = Number(mapProgressByName[_seedMapName] || 0);
+        const _progTotalEl = document.getElementById('progTotal');
+        if (_progTotalEl) _progTotalEl.innerText = _savedTotal.toFixed(0) + '%';
+        if (_savedTotal > 0 && _savedTotal < 100) showMsg(`Ukupno skupljeno: ${_savedTotal.toFixed(0)}%`, '#2ecc71');
+
+        let idCounter = 2;
+        ['zrina', 'maminjo', 'zdero', 'franc'].forEach(t => { if(t !== selectedPlayerType) entities.push(createEntity(idCounter++, t, false)); });
+        
+        // Novi random NPC neprijatelji!
+        const npcTypes = ['npc1', 'npc2', 'npc3', 'npc_rodjak', 'stranka'];
+        let enemyCount = 1 + Math.floor(currentLevelIdx/4) + (eventCfg?.enemyBonus || 0); 
+        if (currentDailyChallenge?.id === 'double_aggro') enemyCount += 1;
+        enemyCount = Math.round(enemyCount * modeCfg.enemyMul);
+        enemyCount = Math.max(1, Math.min(7, enemyCount));
+        for(let i=0; i<enemyCount; i++) {
+            let rType = npcTypes[Math.floor(Math.random()*npcTypes.length)];
+            entities.push(createEntity(idCounter++, rType, false));
+        }
+
+        generateObstacles(); 
+        for(let i=0; i<15 + (eventCfg?.extraPowerups || 0); i++) spawnPowerup();
+        
+        // Debug - logiranje grid stanja
+        let gridTerritoryCount = 0, gridWallCount = 0;
+        for (let y = 0; y < ROWS; y++) {
+            for (let x = 0; x < COLS; x++) {
+                if (grid[y][x] === -2) gridWallCount++;
+                if (grid[y][x] > 0) gridTerritoryCount++;
+            }
+        }
+        console.log(`LEVEL START: entities=${entities.length}, territory_tiles=${gridTerritoryCount}, wall_tiles=${gridWallCount}, empty=${ROWS*COLS - gridTerritoryCount - gridWallCount}`);
+        
+        updateProgressUI(player);
+        gameState = 'PLAYING'; 
+        if (selectedPlayerType === 'maminjo') showMsg('STEALTH PROTOKOL', '#9b59b6');
+        if (selectedPlayerType === 'zrina') showMsg('DEV-HACK ONLINE', '#00adef');
+        if (selectedPlayerType === 'franc') showMsg('TOP VRH MODE', '#2ecc71');
+        if (selectedPlayerType === 'zdero') showMsg('NEMJERLJIVI START', '#e67e22');
+        showMsg('START ZAŠTITA 9s', '#f1c40f');
+        updateBossBar();
+        
+        scheduleBossRadar(getBossIntervalMs() / 2);
+
+        lastFrameTime = 0;
+        accumulatorMs = 0;
+        requestAnimationFrame(gameLoop);
+    }
+
+    function spawnPowerup() {
+        if(powerups.length > 20) return;
+        let playerType = selectedPlayerType || 'zrina';
+        let basePool = ['burek', 'coffee', 'doctor', 'shield', 'lightning', 'zoom'];
+        if (playerType === 'franc') basePool.push('doctor', 'lightning');
+        if (playerType === 'zdero') basePool.push('coffee', 'heart');
+        if (playerType === 'maminjo') basePool.push('shield', 'zoom');
+        if (playerType === 'zrina') basePool.push('burek', 'burek');
+
+        let r = Math.random();
+        let type = r < upgrades.life.value ? 'heart' : basePool[Math.floor(Math.random() * basePool.length)];
+        if (currentDailyChallenge?.id === 'no_shield' && type === 'shield') type = 'zoom';
+        
+        let pos = getSafeSpawn();
+        powerups.push({ type: type, x: pos.x, y: pos.y });
+    }
+
+    function schedulePowerupRespawn(delayMs = 5000) {
+        let remaining = Math.max(0, Number(delayMs) || 0);
+        const stepMs = 120;
+        function tick() {
+            if (gameState === 'PAUSED') {
+                setTimeout(tick, stepMs);
+                return;
+            }
+            if (remaining <= 0) {
+                spawnPowerup();
+                return;
+            }
+            const chunk = Math.min(stepMs, remaining);
+            remaining -= chunk;
+            setTimeout(tick, chunk);
+        }
+        tick();
+    }
+
+    function killEntity(ent, reasonStr, killerEnt = null) {
+        if(ent.lives > 0) {
+            ent.lives--;
+            if(ent.isPlayer) { document.getElementById('extraLifeIcon').style.display = 'none'; }
+            for(let y=0; y<ROWS; y++) for(let x=0; x<COLS; x++) if(grid[y][x] === ent.trailId) grid[y][x] = 0;
+            ent.trailList = []; ent.shield = 180 * (ent.isPlayer ? upgrades.duration.value : 1);
+            if(ent.isPlayer) showMsg("❤️ ALIBI SPREMAN! ❤️", "#e74c3c");
+            return;
+        }
+
+        ent.dead = true;
+        if (killerEnt && killerEnt.id !== ent.id) {
+            pushKillFeed(`${getCharLabel(killerEnt.type)} zatvara nalog od ${getCharLabel(ent.type)}`);
+            if (killerEnt.isPlayer && !ent.isPlayer) advanceObjective('cuts', 1);
+            triggerSfx(killerEnt.isPlayer ? 'kill' : 'capture');
+            if (killerEnt.isPlayer && !ent.isPlayer) triggerKillFlash(50);
+        }
+        let gainedTiles = 0;
+        
+        for(let y=0; y<ROWS; y++) {
+            for(let x=0; x<COLS; x++) {
+                if(grid[y][x] === ent.id || grid[y][x] === ent.trailId) {
+                    if(killerEnt && !killerEnt.dead && killerEnt.id !== ent.id) { grid[y][x] = killerEnt.id; gainedTiles++; } 
+                    else { grid[y][x] = 0; }
+                }
+            }
+        }
+        ent.trailList = [];
+        markTerritoryDirty();
+
+        if(killerEnt && !killerEnt.dead) {
+            killerEnt.tilesConquered += gainedTiles; killerEnt.kills++;
+            if (killerEnt.isPlayer && killerEnt.stats && !ent.isPlayer) {
+                killerEnt.stats.kills = (killerEnt.stats.kills || 0) + 1;
+            }
+            if(killerEnt.isPlayer && gainedTiles > 0) { 
+                addMoney(gainedTiles * upgrades.income.value * (bossPenaltyTimer > 0 ? 0.5 : 1.0)); 
+                updateProgressUI(killerEnt);
+            }
+            // Tokeni za eliminaciju NPC-a
+            if (killerEnt.isPlayer && !ent.isPlayer && ent.id !== 999) {
+                const _killTok = 10;
+                runTokensEarned += _killTok;
+                metaWallet += _killTok;
+                persistMetaState();
+                const _tokEl = document.getElementById('hudTokens');
+                if (_tokEl) _tokEl.innerText = runTokensEarned;
+            }
+        }
+        
+        if(ent.isPlayer) {
+            screenShake(280, 8);
+            // Spremi postotak ove runde u kumulativni napredak mape
+            const _runPct = (ent.tilesConquered / TOTAL_TILES) * 100;
+            addRunProgressToMap(_runPct);
+
+            if (bossRadarTimeoutId) { clearTimeout(bossRadarTimeoutId); bossRadarTimeoutId = null; }
+            if (bossActiveTimeoutId) { clearTimeout(bossActiveTimeoutId); bossActiveTimeoutId = null; }
+            pausedBossRadarRemainingMs = 0;
+            pausedBossActiveRemainingMs = 0;
+
+            gameState = 'GAME_OVER';
+            const pauseBadge = document.getElementById('pauseBadge');
+            if (pauseBadge) pauseBadge.style.display = 'none';
+            openHubWindow('gameOver');
+            const roast = quotes.killer[Math.floor(Math.random() * quotes.killer.length)];
+            document.getElementById('deathReason').innerText = `Razlog: ${reasonStr} ${roast}`; 
+            document.getElementById('finalScore').innerText = Math.floor(totalEurosThisRun);
+            const _goTok = Math.max(15, Math.floor(totalEurosThisRun * 0.04));
+            runTokensEarned += _goTok;
+            metaWallet += _goTok;
+            persistMetaState();
+            const _goTokEl = document.getElementById('goTokens');
+            if (_goTokEl) _goTokEl.innerText = '+' + runTokensEarned;
+            const _goKillsEl = document.getElementById('goKills');
+            if (_goKillsEl) _goKillsEl.innerText = String(ent.stats?.kills || 0);
+            const _pups = ent.stats?.powerups || {};
+            const _cb = Number(_pups.coffee || 0) + Number(_pups.burek || 0);
+            const _goCbEl = document.getElementById('goCoffeeBurek');
+            if (_goCbEl) _goCbEl.innerText = String(_cb);
+            const _goBossEl = document.getElementById('goBossSurvived');
+            if (_goBossEl) _goBossEl.innerText = String(ent.stats?.bossSurvived || 0);
+            const _hudTokEl = document.getElementById('hudTokens');
+            if (_hudTokEl) _hudTokEl.innerText = runTokensEarned;
+            checkHighScore();
+        } else {
+            const allowRespawn = true; // respawn on all levels
+            const respawnDelay = currentLevelIdx >= 6 ? 6000 : currentLevelIdx >= 3 ? 10000 : 14000;
+            if (allowRespawn) {
+                setTimeout(() => {
+                    const aliveEnemies = entities.filter(e => !e.dead && !e.isPlayer && e.id !== 999).length;
+                    if(gameState === 'PLAYING' && aliveEnemies < 9) {
+                        const newEnt = createEntity(ent.id, ent.type, false);
+                        // Spawn on empty (non-territory) cell
+                        const spawnPos = getSafeSpawn(320, false);
+                        newEnt.x = spawnPos.x; newEnt.y = spawnPos.y;
+                        entities.push(newEnt);
+                    }
+                }, respawnDelay);
+            }
+        }
+    }
+
+    function processCell(ent, cx, cy) {
+        if(cx < 0 || cx >= COLS || cy < 0 || cy >= ROWS) return;
+        let cell = grid[cy][cx];
+        
+        if(cell === -1) {
+            killEntity(ent, "Zabio si se u namještaj!", null);
+            return;
+        }
+        if(cell === -2) {
+            return; // zona zid – klizanje se rješava u movement logici
+        }
+
+        ent.inSafeZone = (cell === ent.id);
+
+        if(cell > 100) {
+            let victim = entities.find(e => e.trailId === cell && !e.dead);
+            if(victim) {
+                if(victim.id === ent.id) { killEntity(ent, "Zatvorio si vlastiti trag preblizu."); } 
+                else {
+                    // Spawn grace: player cannot die immediately, but can still eliminate enemies.
+                    if (playerSpawnGraceMs > 0) {
+                        if (ent.isPlayer) {
+                            if(victim.shield <= 0) {
+                                killEntity(victim, `Presjekao si protivnički trag.`, ent);
+                                addMoney(100);
+                            }
+                            return;
+                        }
+                        if (victim.isPlayer) return;
+                    }
+
+                    if(victim.shield > 0) { killEntity(ent, `Uletio si u aktivni štit.`, victim); } 
+                    else if(ent.inSafeZone) { killEntity(victim, `Ušao je u tvoj teritorij!`, ent); }
+                    else { killEntity(victim, `Protivnik ti je zatvorio rutu.`, ent); if(ent.isPlayer) addMoney(100); }
+                }
+            }
+        } else if(cell === ent.id) { 
+            if(ent.trailList.length > 0) fillTerritory(ent);
+        } else { 
+            grid[cy][cx] = ent.trailId; ent.trailList.push({x: cx, y: cy});
+        }
+    }
+
+    function addMoney(amount) {
+        let player = entities.find(e => e.isPlayer);
+        let effectiveAmount = amount;
+        if (player?.traits?.moneyMult) effectiveAmount *= player.traits.moneyMult;
+        if (currentDailyChallenge?.id === 'no_shield') effectiveAmount *= 1.2;
+        bankEuros += amount; totalEurosThisRun += amount;
+        bankEuros += (effectiveAmount - amount);
+        totalEurosThisRun += (effectiveAmount - amount);
+        document.getElementById('score').innerText = Math.floor(bankEuros);
+    }
+
+    function applyPowerupToEntity(ent, p) {
+        let dur = ent.isPlayer ? upgrades.duration.value : 1.0;
+        if (ent.isPlayer && ent.stats) {
+            ent.stats.powerups[p.type] = (ent.stats.powerups[p.type] || 0) + 1;
+        }
+        if(p.type === 'burek' && ent.type === 'zrina') {
+            if(ent.isPlayer) { showMsg("KODIRANJE!", "#00adef"); }
+            let r = 8; let cx = Math.floor(ent.x/TILE); let cy = Math.floor(ent.y/TILE);
+            for(let y=cy-r; y<=cy+r; y++) for(let x=cx-r; x<=cx+r; x++) if(y>=0&&y<ROWS&&x>=0&&x<COLS&&Math.hypot(x-cx,y-cy)<=r&&grid[y][x]!==-1&&grid[y][x]!==-2) if(grid[y][x]!==ent.id) grid[y][x]=ent.id;
+            markTerritoryDirty();
+        }
+        else if(p.type === 'coffee' && ent.type === 'zdero') {
+            if(ent.isPlayer) showMsg("PROBAVA!", "#8B4513");
+            ent.trailList.forEach((pos, idx) => { if(idx%2===0) poops.push({x: pos.x*TILE+TILE/2, y: pos.y*TILE+TILE/2, owner: ent}); });
+        }
+        else if(p.type === 'lightning') { if(ent.isPlayer) showMsg("MUNJA!", "#f1c40f"); ent.speed = ent.baseSpeed * 1.5; ent.powerTimer = 180 * dur; }
+        else if(p.type === 'doctor' && ent.type === 'franc') { if(ent.isPlayer) { showMsg("TOP VRH!", "#2ecc71"); } ent.speed = ent.baseSpeed * 1.8; ent.powerTimer = 240 * dur; }
+        else if(p.type === 'shield') { if(ent.isPlayer) showMsg("STIT AKTIVAN!", "#3498db"); ent.shield = 300 * dur; }
+        else if(p.type === 'zoom' && ent.isPlayer) { showMsg("ENTERPRISE LUPA!", "#fff"); targetCameraZoom = upgrades.zoom.value - 0.3; ent.zoomTimer = 300 * dur; }
+        else if(p.type === 'heart' && ent.isPlayer) { showMsg("ALIBI SPREMAN!", "#e74c3c"); ent.lives++; document.getElementById('extraLifeIcon').style.display = 'inline'; }
+
+        if(ent.isPlayer && p.type !== 'heart') addMoney(20);
+    }
+
+    function fillTerritory(ent) {
+        for(let p of ent.trailList) grid[p.y][p.x] = ent.id;
+        ent.trailList = [];
+        
+        let visited = new Uint8Array(ROWS * COLS); let queue = []; let head = 0;
+        // Pre-mark wall cells as visited so flood can never pass through them
+        for(let y=0; y<ROWS; y++) for(let x=0; x<COLS; x++) if(grid[y][x]===-2) visited[y*COLS+x]=1;
+        function enqueue(cx, cy) {
+            if(cx < 0 || cx >= COLS || cy < 0 || cy >= ROWS) return;
+            let idx = cy * COLS + cx; if(visited[idx] || grid[cy][cx] === ent.id) return; 
+            visited[idx] = 1; queue.push({x: cx, y: cy});
+        }
+        // Seed from the innermost edge of the playable area (first non-wall cell in each row/column)
+        // This replaces seeding from grid boundary (which was all -2 wall cells for shaped maps)
+        for(let y=0; y<ROWS; y++) {
+            for(let x=0; x<COLS; x++) { if(grid[y][x]!==-2) { enqueue(x,y); break; } }
+            for(let x=COLS-1; x>=0; x--) { if(grid[y][x]!==-2) { enqueue(x,y); break; } }
+        }
+        for(let x=0; x<COLS; x++) {
+            for(let y=0; y<ROWS; y++) { if(grid[y][x]!==-2) { enqueue(x,y); break; } }
+            for(let y=ROWS-1; y>=0; y--) { if(grid[y][x]!==-2) { enqueue(x,y); break; } }
+        }
+        while(head < queue.length) { let p = queue[head++]; enqueue(p.x+1, p.y); enqueue(p.x-1, p.y); enqueue(p.x, p.y+1); enqueue(p.x, p.y-1); }
+        
+        let newCount = 0;
+        for(let y=0; y<ROWS; y++) {
+            for(let x=0; x<COLS; x++) {
+                if(!visited[y * COLS + x] && grid[y][x] !== ent.id && grid[y][x] !== -1 && grid[y][x] !== -2) grid[y][x] = ent.id; 
+                if(grid[y][x] === ent.id) newCount++;
+            }
+        }
+
+        // If a powerup ends up inside freshly claimed area, auto-collect it.
+        for (let i = powerups.length - 1; i >= 0; i--) {
+            const p = powerups[i];
+            const cx = Math.floor(p.x / TILE);
+            const cy = Math.floor(p.y / TILE);
+            if (cx < 0 || cx >= COLS || cy < 0 || cy >= ROWS) continue;
+            if (grid[cy][cx] === ent.id) {
+                applyPowerupToEntity(ent, p);
+                powerups.splice(i, 1);
+                schedulePowerupRespawn(5000);
+            }
+        }
+        
+        let gainedTiles = newCount - ent.tilesConquered;
+        let pctGained = (gainedTiles / TOTAL_TILES) * 100;
+        ent.tilesConquered = newCount;
+        if (gainedTiles > 0) markTerritoryDirty();
+
+        if(ent.isPlayer || ent.type.includes('npc')) {
+            if(gainedTiles > 0) {
+                if(ent.isPlayer) {
+                    addMoney(gainedTiles * upgrades.income.value * (bossPenaltyTimer > 0 ? 0.5 : 1.0)); 
+                    updateProgressUI(ent);
+                    advanceObjective('tiles', gainedTiles);
+                    triggerSfx('capture');
+                    const bigCapture = gainedTiles >= 120 || pctGained >= 6;
+                    const talkTrigger = bigCapture || Math.random() < 0.23 || pctGained > 8;
+                    if (talkTrigger) {
+                        let camX = Math.max(0, Math.min(MAP_W - canvas.width/cameraZoom, ent.x - (canvas.width/2)/cameraZoom));
+                        let camY = Math.max(0, Math.min(MAP_H - canvas.height/cameraZoom, ent.y - (canvas.height/2)/cameraZoom));
+                        let px = (ent.x - camX) * cameraZoom;
+                        let py = (ent.y - camY) * cameraZoom;
+                        showTrashBubble(px + (Math.random() * 70 - 35), py - 50, getQuote(ent.type));
+                        if (bigCapture) {
+                            showMsg('MEGA CAPTURE!', '#f1c40f');
+                            triggerSfx('powerup');
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function startBonusRound() {
+        gameState = 'BONUS'; bonusTimeRemaining = 6;
+        document.getElementById('bonusTimer').style.display = 'block'; document.getElementById('bonusTimer').innerText = bonusTimeRemaining;
+        for(let y=0; y<ROWS; y++) for(let x=0; x<COLS; x++) if(grid[y][x]!==-1 && grid[y][x]!==-2) grid[y][x] = 1; 
+        entities.forEach(e => { if(!e.isPlayer) e.dead = true; }); 
+        for(let i=0; i<100; i++) coins.push({x: Math.random()*MAP_W, y: Math.random()*MAP_H}); 
+        markTerritoryDirty();
+        startBonusCountdownTimer();
+    }
+
+    function startBonusCountdownTimer() {
+        if (bonusInterval) clearInterval(bonusInterval);
+        bonusInterval = setInterval(() => {
+            bonusTimeRemaining--; document.getElementById('bonusTimer').innerText = bonusTimeRemaining;
+            if(bonusTimeRemaining <= 0) {
+                clearInterval(bonusInterval);
+                bonusInterval = null;
+                document.getElementById('bonusTimer').style.display = 'none';
+                openHubWindow('startMenu');
+            }
+        }, 1000);
+    }
+
+    function handleMapClear(finalPct) {
+        if (mapClearHandled) return;
+        mapClearHandled = true;
+        gameState = 'MAP_CLEAR';
+        document.getElementById('hud').style.display = 'none';
+
+        const mapName = maps[Math.min(currentLevelIdx, maps.length - 1)];
+        mapProgressByName[mapName] = 100;  // 100% u jednoj rundi = direktno gotovo
+        if (currentLevelIdx + 1 < maps.length) {
+            const nextMapName = maps[currentLevelIdx + 1];
+            if (!Number.isFinite(mapProgressByName[nextMapName])) mapProgressByName[nextMapName] = 0;
+        }
+        persistMapProgress();
+        renderMapFocus();
+
+        const txt = document.getElementById('mapCompleteText');
+        if (txt) {
+            const nextLabel = currentLevelIdx + 1 < maps.length ? maps[currentLevelIdx + 1] : 'Sve karte su završene';
+            txt.innerText = `${mapName} je gotova (${finalPct.toFixed(1)}%). Sljedeća: ${nextLabel}.`;
+        }
+        openHubWindow('mapCompleteMenu');
+        triggerSfx('powerup');
+    }
+
+    function replayCurrentMap() {
+        openHubWindow('charactersMenu');
+    }
+
+    function updateProgressUI(playerEnt) {
+        // Postotak u ovoj rundi (ne uključuje prethodne runde)
+        let pct = (playerEnt.tilesConquered / TOTAL_TILES) * 100;
+        document.getElementById('progText').innerText = pct.toFixed(1) + "%";
+        // Traka prikazuje postotak ove runde (0→100 skale iz runde)
+        document.getElementById('progFill').style.width = Math.min(100, pct) + "%";
+        document.getElementById('hudTip').innerText = LEVEL_TIPS[Math.min(currentLevelIdx, LEVEL_TIPS.length - 1)];
+        if (playerSpawnGraceMs > 0) document.getElementById('hudTip').innerText = `Početna zaštita: ${Math.ceil(playerSpawnGraceMs/1000)}s`;
+
+        if(pct >= 100 && gameState === 'PLAYING') { handleMapClear(pct); }
+    }
+
+    // Zove se kad igrač pogine - dodaje postotak ove runde ukupnom progresu mape
+    function addRunProgressToMap(runPct) {
+        if (runPct <= 0) return;
+        const mapName = maps[Math.min(currentLevelIdx, maps.length - 1)];
+        const prev = Number(mapProgressByName[mapName] || 0);
+        const next = Math.min(100, prev + runPct);
+        mapProgressByName[mapName] = next;
+        persistMapProgress();
+        renderMapFocus();
+        // Ako smo dostigli 100% kumulativno, otključaj sljedeću mapu
+        if (prev < 100 && next >= 100 && currentLevelIdx + 1 < maps.length) {
+            const nextMapName = maps[currentLevelIdx + 1];
+            if (!Number.isFinite(mapProgressByName[nextMapName])) mapProgressByName[nextMapName] = 0;
+            persistMapProgress();
+            showMsg('★ OTKLJUČAN: ' + nextMapName, '#f1c40f');
+        }
+        const el = document.getElementById('progTotal');
+        if (el) el.innerText = next.toFixed(0) + '%';
+    }
+
+    function triggerBossRadar() {
+        if(gameState !== 'PLAYING') return;
+        if(!bossEntity) {
+            bossEntity = createEntity(999, 'boss', false); // C.W. Boss
+            const spawn = getBossSafeSpawn(MAP_W / 2, MAP_H / 2);
+            bossEntity.x = spawn.x; bossEntity.y = spawn.y;
+            entities.push(bossEntity);
+        } else {
+            const gx = Math.floor(bossEntity.x / TILE);
+            const gy = Math.floor(bossEntity.y / TILE);
+            const out = gx < 0 || gx >= COLS || gy < 0 || gy >= ROWS;
+            const solid = !out && (grid[gy][gx] === -1 || grid[gy][gx] === -2);
+            if (out || solid) {
+                const respawn = getBossSafeSpawn(MAP_W / 2, MAP_H / 2);
+                bossEntity.x = respawn.x;
+                bossEntity.y = respawn.y;
+            }
+        }
+        bossActive = true;
+        bossPenaltyTriggeredThisEncounter = false;
+        bossPhase = Math.min(3, 1 + Math.floor(currentLevelIdx / 3));
+        bossPhaseStartMs = performance.now();
+        bossActiveUntilMs = performance.now() + BOSS_DURATION_MS;
+        bossPulseCooldown = 0;
+        showMsg(`C.W. FAZA ${bossPhase}`, '#e74c3c');
+        if (nightmareRadarHidden) triggerSfx('kill');
+        if (bossActiveTimeoutId) clearTimeout(bossActiveTimeoutId);
+        bossActiveTimeoutId = setTimeout(endBossEncounter, BOSS_DURATION_MS);
+        scheduleBossRadar(getBossIntervalMs());
+    }
+
+    function activateAlibi() {
+        if(alibiAvailable > 0 && alibiCooldownTimer === 0 && gameState === 'PLAYING') {
+            const player = entities.find(e => e.isPlayer); if(!player || player.trailList.length === 0) return;
+            
+            alibiAvailable--; alibiCooldownTimer = ALIBI_COOLDOWN_MS; updateAlibiHUD();
+            
+            let cleanedTrails = 0;
+            for(let y=0; y<ROWS; y++) {
+                for(let x=0; x<COLS; x++) {
+                    if(grid[y][x] > 100) { 
+                        let victim = entities.find(e => e.trailId === grid[y][x]);
+                        if(victim && !victim.isPlayer) {
+                            if(Math.hypot(victim.x - player.x, victim.y - player.y) < ALIBI_RANGE_TILES * TILE) {
+                                grid[y][x] = 0; cleanedTrails++;
+                            }
+                        }
+                    }
+                }
+            }
+            entities.forEach(ent => {
+                if(!ent.isPlayer && ent.trailId > 100) {
+                    if(Math.hypot(ent.x - player.x, ent.y - player.y) < ALIBI_RANGE_TILES * TILE) ent.trailList = [];
+                }
+            });
+
+            showMsg(`ALIBI AKTIVAN!`, "#e74c3c");
+            
+            const cooldownInt = setInterval(() => {
+                alibiCooldownTimer -= 100;
+                if(alibiCooldownTimer <= 0) { clearInterval(cooldownInt); alibiCooldownTimer = 0; updateAlibiHUD(); }
+            }, 100);
+        }
+    }
+    window.addEventListener('keydown', e => {
+        if (e.code === 'Space') activateAlibi();
+        if (e.code === 'Escape' || e.code === 'KeyP') {
+            e.preventDefault();
+            togglePauseFromUi();
+        }
+    });
+
+    function updateAlibiHUD() {
+        const btn = document.getElementById('alibiBtn');
+        if(alibiAvailable <= 0 || alibiCooldownTimer > 0) btn.className = 'cooldown';
+        else btn.className = '';
+    }
+
+    function updateShopUI() {
+        document.getElementById('shopEuros').innerText = Math.floor(bankEuros);
+        ['Speed', 'Income', 'Shield', 'Duration', 'Zoom', 'Life'].forEach(type => {
+            let tLow = type.toLowerCase(); let up = upgrades[tLow];
+            document.getElementById(`lvl${type}`).innerText = `Lvl ${up.level}`;
+            document.getElementById(`cost${type}`).innerText = up.cost;
+            document.getElementById(`btnBuy${type}`).disabled = bankEuros < up.cost;
+        });
+    }
+
+    function showShop() {
+        if (gameState === 'PAUSED') setPauseState(false);
+        document.getElementById('hud').style.display = 'none';
+        openHubWindow('shopMenu');
+        updateShopUI();
+    }
+
+    function buyUpgrade(type) {
+        let up = upgrades[type];
+        if(bankEuros >= up.cost) {
+            bankEuros -= up.cost; up.level++; up.cost = Math.floor(up.cost * 1.8); 
+            if(type === 'speed') up.value += 0.22;
+            if(type === 'income') up.value += 1;
+            if(type === 'shield') up.value += 180; 
+            if(type === 'duration') up.value += 0.3; 
+            if(type === 'zoom') up.value = Math.max(0.4, up.value - 0.05); 
+            if(type === 'life') up.value += 0.03; 
+            updateShopUI(); document.getElementById('score').innerText = Math.floor(bankEuros);
+        }
+    }
+
+    function nextLevel() {
+        currentLevelIdx++;
+        if (currentLevelIdx >= maps.length) {
+            currentLevelIdx = 0;
+            prestigeLevel++;
+            localStorage.setItem(PRESTIGE_KEY, String(prestigeLevel));
+            if (prestigeLevel === 1) showMsg('PRESTIGE I: NPC +15%, BRZI BOSS', '#f1c40f');
+            if (prestigeLevel === 2) showMsg('NIGHTMARE LOOP AKTIVAN', '#e74c3c');
+        }
+        selectedMapIdx = currentLevelIdx;
+        renderMapFocus();
+        applyNightmareVisualMode();
+        openHubWindow('startMenu');
+    }
+
+    function updateGame() {
+        let player = entities.find(e => e.isPlayer);
+        if(!player && gameState === 'PLAYING') return; 
+        if (!Number.isFinite(cameraZoom) || cameraZoom < 0.35 || cameraZoom > 2.5) cameraZoom = 1;
+        if (player) {
+            if (!Number.isFinite(player.x) || !Number.isFinite(player.y)) {
+                player.x = MAP_W / 2;
+                player.y = MAP_H / 2;
+            }
+        }
+        if (playerSpawnGraceMs > 0) playerSpawnGraceMs = Math.max(0, playerSpawnGraceMs - frameStepMs);
+
+        if (currentObjective && currentObjective.type === 'survive' && !objectiveCompleted) {
+            const survivalSec = Math.floor((performance.now() - levelStartTimeMs) / 1000);
+            objectiveProgress = survivalSec;
+            if (survivalSec >= currentObjective.target) completeObjective();
+            else if (survivalSec % 2 === 0) updateObjectiveHud();
+        }
+
+        if (currentDailyChallenge?.id === 'time_attack') {
+            const elapsedSec = Math.floor((performance.now() - levelStartTimeMs) / 1000);
+            if (elapsedSec <= 90) {
+                document.getElementById('hudTip').innerText = `Time Attack: ${Math.max(0, 90 - elapsedSec)}s`;
+            }
+        }
+        if (performance.now() < levelSlowUntilMs && playerSpawnGraceMs <= 0) {
+            const introLeft = Math.max(0, Math.ceil((levelSlowUntilMs - performance.now()) / 1000));
+            document.getElementById('hudTip').innerText = `Soft start: ${introLeft}s`;
+        }
+
+        if(gameState === 'BONUS' && player) {
+            for(let i=coins.length-1; i>=0; i--) {
+                if(Math.hypot(player.x - coins[i].x, player.y - coins[i].y) < TILE*3) { addMoney(10); coins.splice(i,1); }
+            }
+        }
+
+        cameraZoom += (targetCameraZoom - cameraZoom) * 0.05;
+        if (!Number.isFinite(targetCameraZoom)) targetCameraZoom = 1;
+        targetCameraZoom = Math.max(0.35, Math.min(2.5, targetCameraZoom));
+        if(bossPenaltyTimer > 0) bossPenaltyTimer -= frameStepMs; 
+
+        // RADAR Boss Kolizija
+        if(bossActive && bossEntity && player) {
+            const activeForMs = performance.now() - bossPhaseStartMs;
+            bossBarValue = 1 - Math.min(1, activeForMs / BOSS_DURATION_MS);
+            updateBossBar();
+            if (activeForMs > BOSS_DURATION_MS * 0.66) bossPhase = Math.max(bossPhase, 3);
+            else if (activeForMs > BOSS_DURATION_MS * 0.33) bossPhase = Math.max(bossPhase, 2);
+
+            let coneAngleHalf = bossPhase === 1 ? Math.PI / 8 : (bossPhase === 2 ? Math.PI / 6.5 : Math.PI / 5.5);
+            let coneLen = bossPhase === 1 ? 600 : (bossPhase === 2 ? 720 : 820);
+            let angleToPlayer = Math.atan2(player.y - bossEntity.y, player.x - bossEntity.x);
+            let diffAngle = angleToPlayer - bossEntity.angle;
+            
+            if(isNaN(diffAngle)) diffAngle = 0;
+            while(diffAngle < -Math.PI) diffAngle += Math.PI*2; 
+            while(diffAngle > Math.PI) diffAngle -= Math.PI*2;
+            
+            if(Math.abs(diffAngle) < coneAngleHalf && Math.hypot(player.x - bossEntity.x, player.y - bossEntity.y) < coneLen) {
+                if(bossPenaltyTimer <= 0) {
+                    if (nightmareRadarHidden) triggerSfx('kill');
+                    else showMsg("UVACEN NA RADAR!", "#e74c3c");
+                    player.speed = player.baseSpeed * (bossPhase === 3 ? 0.42 : 0.5);
+                    bossPenaltyTriggeredThisEncounter = true;
+                    bossPenaltyTimer = bossPhase === 3 ? BOSS_PUNISH_MS + 2500 : BOSS_PUNISH_MS;
+                }
+            } else if(bossPenaltyTimer <= 0) { player.speed = player.baseSpeed + upgrades.speed.value; }
+
+            if (bossPhase >= 3) {
+                bossPulseCooldown -= frameStepMs;
+                if (bossPulseCooldown <= 0) {
+                    bossPulseCooldown = 2200;
+                    const pulseDist = Math.hypot(player.x - bossEntity.x, player.y - bossEntity.y);
+                    if (pulseDist < 260 && player.shield <= 0) {
+                        bossPenaltyTriggeredThisEncounter = true;
+                        showMsg('BOSS PULSE!', '#ff7675');
+                        killEntity(player, 'C.W. pulse val te izbacio iz smjene!', bossEntity);
+                    }
+                }
+            }
+        } else if(bossPenaltyTimer <= 0 && player) {
+            bossBarValue = 0;
+            updateBossBar();
+            player.speed = player.baseSpeed + upgrades.speed.value;
+        }
+
+        for(let i=0; i<entities.length; i++) {
+            for(let j=i+1; j<entities.length; j++) {
+                let e1 = entities[i]; let e2 = entities[j];
+                if(e1.id === 999 || e2.id === 999) continue; 
+                if(!e1.dead && !e2.dead && !e1.inSafeZone && !e2.inSafeZone) {
+                    if ((e1.isPlayer || e2.isPlayer) && playerSpawnGraceMs > 0) {
+                        // During grace, skip body collision deaths involving player.
+                        continue;
+                    }
+                    if(Math.hypot(e1.x - e2.x, e1.y - e2.y) < TILE*1.5) {
+                        if(e1.shield <= 0 && e2.shield <= 0) { killEntity(e1, "Sudar na prijemu."); killEntity(e2, "Sudar na prijemu."); }
+                        else if(e1.shield > 0 && e2.shield <= 0) { killEntity(e2, "Ušao si u štit kolege.", e1); }
+                        else if(e2.shield > 0 && e1.shield <= 0) { killEntity(e1, "Ušao si u štit kolege.", e2); }
+                    }
+                }
+            }
+        }
+
+        for(let i = powerups.length-1; i >= 0; i--) {
+            let p = powerups[i];
+            let collected = false;
+            for (const ent of entities) {
+                const pickupRadius = TILE * (2.5 + ((ent.traits?.collectBonus || 0) / 100));
+                if(!ent.dead && ent.id !== 999 && Math.hypot(ent.x - p.x, ent.y - p.y) < pickupRadius) {
+                    applyPowerupToEntity(ent, p);
+                    collected = true;
+                    break;
+                }
+            }
+            if (collected) {
+                powerups.splice(i, 1);
+                schedulePowerupRespawn(5000);
+            }
+        }
+
+        let camX = player ? Math.max(0, Math.min(MAP_W - canvas.width/cameraZoom, player.x - (canvas.width/2)/cameraZoom)) : 0;
+        let camY = player ? Math.max(0, Math.min(MAP_H - canvas.height/cameraZoom, player.y - (canvas.height/2)/cameraZoom)) : 0;
+        let playerScreenX = player ? (player.x - camX) * cameraZoom : window.innerWidth/2;
+        let playerScreenY = player ? (player.y - camY) * cameraZoom : window.innerHeight/2;
+
+        entities.forEach(ent => {
+            if(ent.dead) return;
+
+            if(ent.id !== 999) { 
+                if(ent.powerTimer > 0) { ent.powerTimer--; if(ent.powerTimer === 0) ent.speed = ent.baseSpeed + (ent.isPlayer?upgrades.speed.value:0); }
+                if(ent.shield > 0) ent.shield--;
+                if(ent.zoomTimer > 0) { ent.zoomTimer--; if(ent.zoomTimer === 0) targetCameraZoom = upgrades.zoom.value; }
+
+                if(ent.isPlayer) {
+                    ent.isHunting = false;
+                    if(isUsingTouch) { ent.targetAngle = touchAngle; } 
+                    else { ent.targetAngle = Math.atan2(mouseY - playerScreenY, mouseX - playerScreenX); }
+                } else {
+                    ent.isHunting = false;
+                    ent.timer++; let tAng = ent.angle; let panic = false;
+                    if(ent.x < TILE*3) { tAng = 0; panic = true; } else if(ent.x > MAP_W - TILE*3) { tAng = Math.PI; panic = true; }
+                    if(ent.y < TILE*3) { tAng = Math.PI/2; panic = true; } else if(ent.y > MAP_H - TILE*3) { tAng = -Math.PI/2; panic = true; }
+                    if(panic) ent.targetAngle = tAng;
+                    else {
+                        const playerDist = player ? Math.hypot(ent.x - player.x, ent.y - player.y) : Infinity;
+                        const playerIsExposed = !!player && player.trailList.length > 0;
+                        const withinHunterRadius = playerIsExposed && playerDist <= TILE * 15;
+
+                        const dangerFromTrailDebt = ent.trailList.length > (ent.aiProfile === 'cautious' ? 16 : 24);
+                        const dangerFromClosePlayer = playerDist < TILE * 6 && playerIsExposed;
+                        const mustRetreat = dangerFromTrailDebt || dangerFromClosePlayer;
+
+                        if (mustRetreat) {
+                            ent.targetAngle = Math.atan2(ent.startY - ent.y, ent.startX - ent.x);
+                        } else if (withinHunterRadius) {
+                            ent.isHunting = true;
+                            let huntTarget = { x: player.x, y: player.y };
+                            if (player.trailList.length > 0) {
+                                const oldestTrail = player.trailList[0];
+                                huntTarget = { x: oldestTrail.x * TILE + TILE / 2, y: oldestTrail.y * TILE + TILE / 2 };
+                            }
+                            ent.targetAngle = Math.atan2(huntTarget.y - ent.y, huntTarget.x - ent.x);
+                        } else if(ent.timer % 20 === 0) {
+                            const stealthRange = charData[selectedPlayerType]?.stealthRange || 0;
+                            const canTrackTrail = !(selectedPlayerType === 'maminjo' && playerDist > stealthRange);
+                            const playerTrailTarget = canTrackTrail ? findNearestTrailTarget(ent, 1) : null;
+                            const huntByProfile = {
+                                aggressive: aiBaseAggro + modeAggroOffset + 0.15,
+                                balanced: aiBaseAggro + modeAggroOffset,
+                                cautious: aiBaseAggro + modeAggroOffset - 0.2,
+                                stalker: aiBaseAggro + modeAggroOffset + 0.08
+                            };
+                            if (currentDailyChallenge?.id === 'double_aggro') {
+                                huntByProfile.aggressive += 0.16;
+                                huntByProfile.balanced += 0.12;
+                                huntByProfile.cautious += 0.1;
+                                huntByProfile.stalker += 0.14;
+                            }
+                            const huntChance = Math.max(0.15, Math.min(0.9, huntByProfile[ent.aiProfile] || aiBaseAggro));
+                            const tunedHuntChance = playerSpawnGraceMs > 0 ? 0.05 : Math.max(0.08, Math.min(0.65, huntChance));
+                            if(playerTrailTarget && Math.random() < tunedHuntChance) {
+                                ent.targetAngle = Math.atan2(playerTrailTarget.y - ent.y, playerTrailTarget.x - ent.x);
+                            }
+                            else if(Math.random() < (ent.aiProfile === 'aggressive' ? 0.3 : 0.16)) ent.targetAngle = ent.angle + (Math.random()-0.5)*2;
+                        }
+                    }
+                }
+            } else { 
+                // Boss ponašanje (Car Boss)
+                if(Math.random()<0.01) ent.targetAngle = ent.angle + (Math.random()-0.5)*2;
+                if(ent.x < TILE*3) { ent.targetAngle = 0; } else if(ent.x > MAP_W - TILE*3) { ent.targetAngle = Math.PI; }
+                if(ent.y < TILE*3) { ent.targetAngle = Math.PI/2; } else if(ent.y > MAP_H - TILE*3) { ent.targetAngle = -Math.PI/2; }
+            }
+
+            let diff = ent.targetAngle - ent.angle;
+            if (isNaN(diff)) diff = 0; 
+            
+            while(diff < -Math.PI) diff += Math.PI*2; 
+            while(diff > Math.PI) diff -= Math.PI*2;
+            ent.angle += diff * (ent.isPlayer ? 0.2 : 0.1); 
+            
+            let spdMultiplier = (bossPenaltyTimer > 0 && ent.isPlayer) ? 0.5 : 1;
+            const softStartFactor = performance.now() < levelSlowUntilMs ? 0.88 : 1;
+            spdMultiplier *= softStartFactor;
+            if (ent.isPlayer && !ent.inSafeZone && bossPenaltyTimer <= 0) spdMultiplier *= 1.03;
+            if (ent.isPlayer && ent.type === 'franc') spdMultiplier *= (charData.franc.sprintBoost || 1);
+            const _mx = Math.cos(ent.angle) * ent.speed * spdMultiplier;
+            const _my = Math.sin(ent.angle) * ent.speed * spdMultiplier;
+            let _nx = ent.x + _mx, _ny = ent.y + _my;
+            // Klizanje uz zid zone umjesto ubijanja
+            const _wallAt = (px, py) => {
+                const gx = Math.floor(px / TILE), gy = Math.floor(py / TILE);
+                if (gx < 0 || gx >= COLS || gy < 0 || gy >= ROWS) return true;
+                const c = grid[gy][gx];
+                if (c === -2) return true;
+                if (ent.id === 999 && c === -1) return true;
+                return false;
+            };
+            if (_wallAt(_nx, _ny)) {
+                if (!_wallAt(ent.x + _mx, ent.y)) { _ny = ent.y; }       // klizi uz X os
+                else if (!_wallAt(ent.x, ent.y + _my)) { _nx = ent.x; }  // klizi uz Y os
+                else { _nx = ent.x; _ny = ent.y; }                        // potpuno blokiran
+            }
+            ent.x = _nx; ent.y = _ny;
+
+            if (ent.id === 999 && _wallAt(ent.x, ent.y)) {
+                const rescue = getBossSafeSpawn(player ? player.x : MAP_W / 2, player ? player.y : MAP_H / 2);
+                ent.x = rescue.x;
+                ent.y = rescue.y;
+            }
+
+            if(ent.id !== 999 && (ent.x < 0 || ent.x >= MAP_W || ent.y < 0 || ent.y >= MAP_H)) { killEntity(ent, "Ispao si iz zone servisa."); return; }
+
+            let cx = Math.floor(ent.x / TILE); let cy = Math.floor(ent.y / TILE);
+            if(ent.id !== 999 && (cx !== ent.lastCx || cy !== ent.lastCy)) { processCell(ent, cx, cy); ent.lastCx = cx; ent.lastCy = cy; }
+
+            if(ent.id !== 999) {
+                poops.forEach((poop, pIdx) => {
+                    if(playerSpawnGraceMs > 0 && ent.isPlayer) return;
+                    if(Math.hypot(ent.x - poop.x, ent.y - poop.y) < TILE*1.5 && ent.type !== 'zdero') { killEntity(ent, `Skliznuo si na mokroj zoni.`, poop.owner); poops.splice(pIdx, 1); }
+                });
+            }
+        });
+
+        entities = entities.filter(e => !e.dead);
+    }
+
+    function draw() {
+        // Reset state in case previous frame left bad transform/compositing.
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = 1;
+
+        let player = entities.find(e => e.isPlayer);
+        if (!player && gameState === 'PLAYING') {
+            console.warn('DRAW: player nije pronađen! entities.length =', entities.length);
+        }
+        let px = player ? player.x : MAP_W/2;
+        let py = player ? player.y : MAP_H/2;
+        const safeZoom = (Number.isFinite(cameraZoom) && cameraZoom >= 0.35 && cameraZoom <= 2.5) ? cameraZoom : 1;
+        if (safeZoom !== cameraZoom) cameraZoom = safeZoom;
+        const drawZoom = safeZoom;
+
+        if (renderMode === 'flat') {
+            const bg = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            bg.addColorStop(0, '#243447');
+            bg.addColorStop(1, '#1b2a38');
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (textureTestEnabled) {
+                drawTextureOverlaySafe(px, py, drawZoom);
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.globalAlpha = 1;
+            }
+        } else {
+            drawLayeredBackground();
+            // Force known-safe state after textured pass.
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.globalAlpha = 1;
+        }
+        
+        if (renderMode !== 'flat') {
+            let bgColors = ['rgba(90,110,130,0.16)','rgba(70,100,130,0.16)','rgba(88,120,150,0.14)','rgba(95,130,160,0.13)','rgba(120,105,90,0.13)','rgba(100,120,90,0.12)','rgba(80,100,120,0.14)','rgba(110,100,120,0.12)','rgba(90,95,110,0.14)'];
+            ctx.fillStyle = bgColors[currentLevelIdx % bgColors.length];
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        let camX = Math.max(0, Math.min(MAP_W - canvas.width/drawZoom, px - (canvas.width/2)/drawZoom));
+        let camY = Math.max(0, Math.min(MAP_H - canvas.height/drawZoom, py - (canvas.height/2)/drawZoom));
+        
+        ctx.save(); ctx.scale(drawZoom, drawZoom); ctx.translate(-camX, -camY);
+        
+        let sCol = Math.max(0, Math.floor(camX / TILE)); let eCol = Math.min(COLS, sCol + Math.ceil((canvas.width/drawZoom) / TILE) + 1);
+        let sRow = Math.max(0, Math.floor(camY / TILE)); let eRow = Math.min(ROWS, sRow + Math.ceil((canvas.height/drawZoom) / TILE) + 1);
+        const visibleTileCount = (eCol - sCol) * (eRow - sRow);
+        const simpleTerritoryFill = lowFxMode || drawZoom < 0.9 || visibleTileCount > 1800;
+        const ownerByTileId = {};
+        entities.forEach(e => { ownerByTileId[e.id] = e; ownerByTileId[e.trailId] = e; });
+        
+        // Debug: logiranje ako nema entiteta
+        if (entities.length === 0 && gameState === 'PLAYING') {
+            console.warn('ENTITIES PRAZAN!', entities.length, gameState);
+        }
+        if (Object.keys(ownerByTileId).length === 0 && gameState === 'PLAYING') {
+            console.warn('OWNER_BY_TILEID PRAZAN!', Object.keys(ownerByTileId).length);
+        }
+        // Debug - crta se li teren
+        let tileCount = 0;
+        
+        for(let y = sRow; y < eRow; y++) {
+            for(let x = sCol; x < eCol; x++) {
+                let v = grid[y][x];
+                if(v > 0) {
+                    tileCount++;
+                    let owner = ownerByTileId[v];
+                    if(owner) {
+                        const isTrail = v > 100;
+                        if (simpleTerritoryFill && !isTrail) {
+                            const startX = x;
+                            while (x + 1 < eCol && grid[y][x + 1] === v) x++;
+                            const tileX = startX * TILE;
+                            const tileY = y * TILE;
+                            const tileW = (x - startX + 1) * TILE;
+                            ctx.fillStyle = owner.color + 'b0';
+                            ctx.fillRect(tileX, tileY, tileW, TILE);
+                        } else {
+                            const inset = isTrail ? 2 : 0;
+                            const tileX = x * TILE + inset;
+                            const tileY = y * TILE + inset;
+                            const tileSize = TILE - inset * 2;
+                            const roundness = isTrail ? 8 : 6;
+                            if (isTrail) {
+                                ctx.fillStyle = owner.color;
+                            } else {
+                                const gloss = ctx.createLinearGradient(tileX, tileY, tileX, tileY + tileSize);
+                                gloss.addColorStop(0, owner.color + 'bb');
+                                gloss.addColorStop(0.42, owner.color + '8f');
+                                gloss.addColorStop(1, owner.color + '66');
+                                ctx.fillStyle = gloss;
+                            }
+                            if(!lowFxMode && owner.shield > 0 && isTrail) { ctx.shadowBlur = 15; ctx.shadowColor = '#3498db'; ctx.fillStyle = '#3498db'; }
+                            drawRoundedRect(tileX, tileY, tileSize, tileSize, roundness);
+                            ctx.fill();
+                            if (!isTrail) {
+                                ctx.strokeStyle = 'rgba(255,255,255,0.16)';
+                                ctx.lineWidth = 1;
+                                ctx.beginPath();
+                                ctx.moveTo(tileX + 3, tileY + 2);
+                                ctx.lineTo(tileX + tileSize - 3, tileY + 2);
+                                ctx.stroke();
+                                ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+                                ctx.beginPath();
+                                ctx.moveTo(tileX + 2, tileY + tileSize - 2);
+                                ctx.lineTo(tileX + tileSize - 2, tileY + tileSize - 2);
+                                ctx.stroke();
+                            }
+                            ctx.shadowBlur = 0;
+                        }
+                    }
+                } else if (v === -2) {
+                    const wx = x * TILE;
+                    const wy = y * TILE;
+                    ctx.fillStyle = 'rgba(8, 12, 18, 0.72)';
+                    ctx.fillRect(wx, wy, TILE, TILE);
+
+                    // Highlight only the playable-facing edges so map border is obvious in motion.
+                    ctx.strokeStyle = 'rgba(255, 205, 64, 0.9)';
+                    ctx.lineWidth = 2;
+                    if (y > 0 && grid[y - 1][x] >= 0) {
+                        ctx.beginPath();
+                        ctx.moveTo(wx, wy + 1);
+                        ctx.lineTo(wx + TILE, wy + 1);
+                        ctx.stroke();
+                    }
+                    if (y < ROWS - 1 && grid[y + 1][x] >= 0) {
+                        ctx.beginPath();
+                        ctx.moveTo(wx, wy + TILE - 1);
+                        ctx.lineTo(wx + TILE, wy + TILE - 1);
+                        ctx.stroke();
+                    }
+                    if (x > 0 && grid[y][x - 1] >= 0) {
+                        ctx.beginPath();
+                        ctx.moveTo(wx + 1, wy);
+                        ctx.lineTo(wx + 1, wy + TILE);
+                        ctx.stroke();
+                    }
+                    if (x < COLS - 1 && grid[y][x + 1] >= 0) {
+                        ctx.beginPath();
+                        ctx.moveTo(wx + TILE - 1, wy);
+                        ctx.lineTo(wx + TILE - 1, wy + TILE);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        // Debug - logiranje tile count
+        if (gameState === 'PLAYING' && tileCount === 0) {
+            console.warn(`DRAW: tileCount=0! grid ima samo -1 ili -2 vrijednosti ili prazan`);
+        }
+        
+        if (imgs.wall.complete && imgs.wall.naturalWidth !== 0) {
+            let wallPtrn = ctx.createPattern(imgs.wall, 'repeat');
+            ctx.strokeStyle = wallPtrn; ctx.lineWidth = TILE * 2;
+        } else { ctx.strokeStyle = '#444'; ctx.lineWidth = TILE; }
+        ctx.strokeRect(-TILE, -TILE, MAP_W + TILE*2, MAP_H + TILE*2);
+        ctx.strokeStyle = '#f1c40f'; ctx.lineWidth = 4; ctx.strokeRect(0, 0, MAP_W, MAP_H);
+        
+        // Jasan okvir grida za bolje vođenje igrača
+        ctx.strokeStyle = 'rgba(255, 100, 100, 0.6)'; ctx.lineWidth = 6; ctx.strokeRect(0, 0, MAP_W, MAP_H);
+        ctx.strokeStyle = 'rgba(255, 150, 150, 0.3)'; ctx.lineWidth = 12; ctx.strokeRect(0, 0, MAP_W, MAP_H);
+
+        // CRTANJE NOVIH PREPREKA (Iz onih EFAC_3D tekstura)
+        obstacles.forEach(obs => {
+            let imgToDraw = imgs[obs.type]; 
+            const footprintSize = (obs.size || OBSTACLE_SIZE_TILES) * TILE;
+            const drawScale = OBSTACLE_DRAW_SCALE_BY_TYPE[obs.type] || 1.25;
+            const drawSize = footprintSize * drawScale;
+            const drawOffset = (drawSize - footprintSize) / 2;
+            if (!lowFxMode) { ctx.shadowBlur = 20; ctx.shadowColor = '#ff00ff'; }
+            if(!safeDraw(imgToDraw, obs.cx*TILE - drawOffset, obs.cy*TILE - drawOffset, drawSize, drawSize)) {
+                ctx.fillStyle = '#8B4513';
+                ctx.fillRect(obs.cx*TILE, obs.cy*TILE, footprintSize, footprintSize);
+            }
+            ctx.strokeStyle = '#ff00ff';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(obs.cx*TILE, obs.cy*TILE, footprintSize, footprintSize);
+            ctx.shadowBlur = 0;
+        });
+
+        // Paper-like smooth stroke improves readability on mobile and avoids blocky cubes.
+        const playerTrailOwner = entities.find(e => e.isPlayer && !e.dead);
+        if (playerTrailOwner && playerTrailOwner.trailList.length > 1) {
+            const pts = playerTrailOwner.trailList;
+            if (!lowFxMode) {
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = playerTrailOwner.color;
+            }
+            ctx.strokeStyle = playerTrailOwner.color;
+            ctx.lineWidth = TILE * 0.62;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(pts[0].x * TILE + TILE / 2, pts[0].y * TILE + TILE / 2);
+            for (let i = 1; i < pts.length; i++) {
+                ctx.lineTo(pts[i].x * TILE + TILE / 2, pts[i].y * TILE + TILE / 2);
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+        }
+
+        // BOSS RADAR STOŽAC
+        if (bossActive && bossEntity && !nightmareRadarHidden) {
+            ctx.save(); ctx.translate(bossEntity.x, bossEntity.y); ctx.rotate(bossEntity.angle);
+            ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, 600, -Math.PI/8, Math.PI/8);
+            ctx.fillStyle = 'rgba(231, 76, 60, 0.2)'; ctx.fill();
+            ctx.strokeStyle = 'rgba(231, 76, 60, 0.8)'; ctx.lineWidth = 2; ctx.stroke();
+            ctx.restore();
+        }
+
+        // NOVI POWERUPI
+        ctx.font = "36px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        powerups.forEach(p => { 
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#f1c40f';
+            if(p.type === 'burek') {
+                if(!safeDraw(imgs.burek, p.x - 22.5, p.y - 22.5, 45, 45)) ctx.fillText('🍔', p.x, p.y);
+            }
+            else if(p.type === 'coffee') {
+                if(!safeDraw(imgs.coffee, p.x - 22.5, p.y - 22.5, 45, 45)) ctx.fillText('☕', p.x, p.y);
+            }
+            else {
+                let emoji = '';
+                if(p.type==='doctor') emoji='👨‍⚕️'; else if(p.type==='shield') emoji='🛡️'; else if(p.type==='lightning') emoji='⚡'; else if(p.type==='zoom') emoji='🔍'; else if(p.type==='heart') emoji='❤️';
+                ctx.fillText(emoji, p.x, p.y); 
+            }
+            ctx.shadowBlur = 0;
+        });
+        
+        coins.forEach(c => { 
+            if(!safeDraw(imgs.euro50, c.x - 15, c.y - 15, 30, 30)) {
+                if(!safeDraw(imgs.euro, c.x - 15, c.y - 15, 30, 30)) {
+                    ctx.fillStyle = '#f1c40f';
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, 8, 0, Math.PI*2);
+                    ctx.fill();
+                }
+            }
+        });
+        
+        poops.forEach(p => ctx.fillText('💩', p.x, p.y));
+
+        entities.forEach(ent => {
+            if(ent.dead) return;
+            if(!ent.isPlayer && ent.type === 'maminjo' && player && Math.hypot(player.x - ent.x, player.y - ent.y) > 300) ctx.globalAlpha = 0.2;
+            else ctx.globalAlpha = 1;
+
+            ctx.fillStyle = ent.color; ctx.beginPath(); ctx.arc(ent.x, ent.y, TILE*1.2, 0, Math.PI*2); 
+            if(!lowFxMode && ent.shield > 0) { ctx.shadowBlur = 20; ctx.shadowColor = '#3498db'; ctx.strokeStyle = '#3498db'; ctx.lineWidth = 5; ctx.stroke(); }
+            ctx.fill(); ctx.shadowBlur = 0;
+            if(ent.isPlayer) {
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+            
+            // Crtamo lika (ili boss auto)
+            let img = getEntityImage(ent);
+
+            if(img && img.complete && img.naturalHeight !== 0) {
+                ctx.save(); ctx.translate(ent.x, ent.y); ctx.rotate(ent.angle + Math.PI/2);
+                ctx.beginPath(); ctx.arc(0, 0, TILE*1.1, 0, Math.PI*2); ctx.clip();
+                safeDraw(img, -TILE*1.1, -TILE*1.1, TILE*2.2, TILE*2.2); ctx.restore();
+            }
+
+            let accessories = "";
+            if(ent.kills >= 3) accessories += "🕶️ ";
+            if(ent.tilesConquered / TOTAL_TILES >= 0.5) accessories += "👑 ";
+            if(ent.isHunting) {
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = 'bold 24px Arial';
+                ctx.fillText('!', ent.x, ent.y - TILE*2.4);
+            }
+            if(accessories) { ctx.font = "20px Arial"; ctx.fillText(accessories, ent.x, ent.y - TILE*1.5); }
+        });
+        ctx.globalAlpha = 1; ctx.restore();
+
+        // Guaranteed fallback marker so the player is always visible if textures/layers fail.
+        if (player && Number.isFinite(player.x) && Number.isFinite(player.y)) {
+            const pxScr = (player.x - camX) * drawZoom;
+            const pyScr = (player.y - camY) * drawZoom;
+            if (pxScr > -60 && pxScr < canvas.width + 60 && pyScr > -60 && pyScr < canvas.height + 60) {
+                ctx.save();
+                ctx.globalAlpha = 0.9;
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(pxScr, pyScr, 10, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.fillStyle = '#00d4ff';
+                ctx.beginPath();
+                ctx.arc(pxScr, pyScr, 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        drawMiniMap(player);
+
+        if(isTouching && isUsingTouch && (gameState === 'PLAYING' || gameState === 'BONUS')) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)'; ctx.beginPath(); ctx.arc(touchStartX, touchStartY, 60, 0, Math.PI*2); ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)'; ctx.lineWidth = 2; ctx.stroke();
+            
+            let dist = Math.min(Math.hypot(touchX - touchStartX, touchY - touchStartY), 60);
+            let knobX = touchStartX + Math.cos(touchAngle) * dist;
+            let knobY = touchStartY + Math.sin(touchAngle) * dist;
+            
+            ctx.fillStyle = 'rgba(0, 173, 239, 0.5)'; ctx.beginPath(); ctx.arc(knobX, knobY, 25, 0, Math.PI*2); ctx.fill();
+        }
+    }
+
+    let lastFrameTime = 0;
+    let accumulatorMs = 0;
+    function gameLoop(timestamp) { 
+        if(gameState === 'PLAYING' || gameState === 'BONUS') { 
+            gameLoopId = requestAnimationFrame(gameLoop); 
+            if (!lastFrameTime) lastFrameTime = timestamp;
+            const frameDelta = Math.min(100, timestamp - lastFrameTime);
+            lastFrameTime = timestamp;
+            accumulatorMs += frameDelta;
+            try {
+                let catchupSteps = 0;
+                while (accumulatorMs >= frameStepMs && catchupSteps < maxCatchupSteps) {
+                    updateGame();
+                    accumulatorMs -= frameStepMs;
+                    catchupSteps++;
+                }
+                if (gameState === 'PLAYING' || gameState === 'BONUS') {
+                    draw();
+                }
+            } catch (e) {
+                console.error('GAME LOOP ERROR:', e);
+                document.getElementById('deathReason').innerText = "FATAL ERROR: " + e.message;
+                gameState = 'GAME_OVER';
+                const pauseBadge = document.getElementById('pauseBadge');
+                if (pauseBadge) pauseBadge.style.display = 'none';
+                openHubWindow('gameOver');
+            }
+        } 
+    }
+</script>
+</body>
+</html>

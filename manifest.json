@@ -1,0 +1,22 @@
+{
+  "name": "EFAC Enterprise",
+  "short_name": "EFAC",
+  "description": "Paper.io klon za EFAC ekipu",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00adef",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "zrina.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "zrina.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
