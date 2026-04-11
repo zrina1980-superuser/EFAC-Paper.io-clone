@@ -1,6 +1,33 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/28a51ff5-9b15-4f32-bf32-7917ac7c61e2/deploy-status)](https://app.netlify.com/projects/igrazazderu/deploys)
+
 # EFAC-Paper.io-clone
 
 A game inspired by **Paper.io**-style mechanics, featuring the EFAC service team.
+
+## Preview
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="assets/Mainmenu.jpg" alt="Main game menu" width="420" />
+      <br /><sub><b>Main game menu, first screen after load</b></sub>
+    </td>
+    <td align="center">
+      <img src="assets/charselect.jpg" alt="Character selection screen" width="420" />
+      <br /><sub><b>Character selection screen</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="assets/gameplay1.jpg" alt="Gameplay, action in game" width="420" />
+      <br /><sub><b>Gameplay, action in game</b></sub>
+    </td>
+    <td align="center">
+      <img src="assets/gameover.jpg" alt="Game Over screen" width="420" />
+      <br /><sub><b>Game Over screen, you're dead — try again</b></sub>
+    </td>
+  </tr>
+</table>
 
 ## Play it now
 **Live demo:** https://igrazazderu.netlify.app
